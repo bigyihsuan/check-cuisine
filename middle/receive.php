@@ -1,6 +1,8 @@
 <?php
+include("../servers.php");
 
 require_once __DIR__ . '/vendor/autoload.php';
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
@@ -22,5 +24,3 @@ while ($channel->is_open()) {
 
 $channel->close();
 $connection->close();
-
-?>

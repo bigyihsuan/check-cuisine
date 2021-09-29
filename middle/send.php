@@ -1,10 +1,12 @@
 <?php
+include("../servers.php");
 
 require_once __DIR__ . '/vendor/autoload.php';
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+$connection = new AMQPStreamConnection($rabbit_server, 5672, 'guest', 'guest');
 $channel = $connection->channel();
 
 $channel->queue_declare('hello', false, false, false, false);
@@ -16,5 +18,3 @@ echo " [x] Sent 'Hello World!'\n";
 
 $channel->close();
 $connection->close();
-
-?>
