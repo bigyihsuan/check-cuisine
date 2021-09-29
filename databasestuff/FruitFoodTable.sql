@@ -220,4 +220,4 @@ VALUES
 'Watermelon', 100, 30, 0, 0, 7, 0, 6
 );
 
-SELECT * FROM vegfoodinfo;
+SELECT * FROM fruitfoodinfo;
