@@ -7,7 +7,7 @@ $database_server = "25.52.70.25"; // jakub
 
 $back_server_creds = ["backend", "back"];
 
-// RABBIT MQ USER ACCOUNT INFO //
+// RABBITMQ USER ACCOUNT INFO //
 
 //USER:backend
 //PASSWORD: back
