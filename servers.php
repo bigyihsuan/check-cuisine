@@ -6,6 +6,8 @@ $back_server = "25.52.190.242"; // yi-hsuan
 $database_server = "25.52.70.25"; // jakub
 
 $back_server_creds = ["backend", "back"];
+$front_server_creds = ["frontend", "front"];
+$data_server_creds = ["database", "data"];
 
 // RABBITMQ USER ACCOUNT INFO //
 
@@ -17,5 +19,3 @@ $back_server_creds = ["backend", "back"];
 
 //USER: database
 //PASSWORD: data
-
-    
