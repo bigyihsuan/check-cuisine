@@ -11,4 +11,7 @@ if [ $? -eq 0 ]; then
     echo "${rabbit_server[1]} is running."
 else
     echo "${rabbit_server[1]} is not running."
+    sudo hamachi login
+    sudo hamachi join it490-005-4 123
+    sudo service rabbitmq-server start && echo "[start-rabbit] RabbitMQ started" || echo "[start-rabbit] RabbitMQ startup failed"
 fi
