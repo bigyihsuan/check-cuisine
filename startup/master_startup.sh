@@ -11,5 +11,5 @@ if [ $? -eq 0 ]; then
     echo "${rabbit_server[1]} is running."
 else
     echo "${rabbit_server[1]} is not running."
-    sshpass -p ${start_services_user[1]} ssh -l ${start_services_user[0]} ${rabbit_server[0]} 'hamachi login; hamachi join it490-005-4 123; service rabbitmq-server start && echo "[start-rabbit] RabbitMQ started" || echo "[start-rabbit] RabbitMQ startup failed"; logout'
+    sshpass -p ${start_services_user[1]} ssh -l ${start_services_user[0]} ${rabbit_server[0]} 'sudo hamachi login; sudo hamachi join it490-005-4 123; sudo service rabbitmq-server start && echo "[start-rabbit] RabbitMQ started" || echo "[start-rabbit] RabbitMQ startup failed"; exit'
 fi
