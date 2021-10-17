@@ -16,6 +16,7 @@ $callback = function ($msg) {
     echo ' [x] Received ', $msg->body, "\n";
 };
 
+// basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $channel->basic_consume('hello', '', false, true, false, false, $callback);
 
 while ($channel->is_open()) {

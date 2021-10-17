@@ -9,6 +9,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rabbit_server, 5672, $back_server_creds[0], $back_server_creds[1]);
 $channel = $connection->channel();
 
+// queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $channel->queue_declare('hello', false, false, false, false);
 
 $end = 5;

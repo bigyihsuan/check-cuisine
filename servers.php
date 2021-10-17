@@ -14,6 +14,14 @@ const BACK_FRONT = 'back-front';
 const BACK_DATA = 'back-data';
 const DATA_BACK = 'data-back';
 
+abstract class Prefix
+{
+    const LOGIN = 0;
+    const REGISTER = 1;
+    const GET = 2;
+    const SET = 3;
+    const DELETE = 4;
+}
 
 // RABBITMQ USER ACCOUNT INFO //
 

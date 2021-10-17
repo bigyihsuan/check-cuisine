@@ -1,5 +1,6 @@
 <?php
-include("../servers.php");
+include "../servers.php";
+include "../rabbit_endpoints.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -9,11 +10,76 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rabbit_server, 5672, $back_server_creds[0], $back_server_creds[1]);
 $channel = $connection->channel();
 
+
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $channel->queue_declare(FRONT_BACK, true, false, false, false);
 $channel->queue_declare(BACK_FRONT, true, false, false, false);
 $channel->queue_declare(BACK_DATA, true, false, false, false);
 $channel->queue_declare(DATA_BACK, true, false, false, false);
+
+$channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
+
+$handle_front = function (AMQPMessage $request) {
+    $channel = $request->getChannel();
+    // for sending queries to the database
+    $database_client = new Client($request->getChannel()->getConnection(), BACK_DATA);
+
+    list($prefix, $body) = explode(" ", $request->body, 2);
+
+    switch ($prefix) {
+        case Prefix::LOGIN: {
+                // body is username and password
+                list($username, $password) = explode(" ", $body, 2);
+                // create query from user and password
+                $query = "SELECT * FROM Users WHERE username=$username && password=$password;";
+                break;
+            }
+        case Prefix::REGISTER: {
+                // body is username and password
+                list($username, $password) = explode(" ", $body, 2);
+                // create query from user and password
+                $query = "INSERT INTO Users (username, password) VALUES ($username, $password);";
+                break;
+            }
+        default: {
+                break;
+            }
+    }
+    $result = $database_client->send_query($query, $prefix);
+
+    // generate message, based on prefix
+    list($prefix, $body) = explode(" ", $result, 2);
+    $json = json_decode($body, associative: true);
+
+    switch ($prefix) {
+        case Prefix::LOGIN:
+        case Prefix::REGISTER: { // send a response code based on how it responded
+                // response is the user from the requested username and password
+                if (count($json) == 1) {
+                    // there is exactly 1 user returned from the thing
+                    $result = true;
+                }
+                break;
+            }
+        default: {
+                break;
+            }
+    }
+
+    $message = new AMQPMessage("$prefix $result", array("correlation_id" => $request->get("correlation_id")));
+    $request->getChannel()->basic_publish($message, '', $request->get("reply_to"));
+    $request->ack();
+};
+
+// for sending responses back to the frontend
+$channel->basic_consume(BACK_FRONT, false, false, false, $handle_front);
+
+while ($channel->is_open()) {
+    $channel->wait();
+}
+
+$channel->close();
+$connection->close();
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 // $channel->basic_consume(FRONT_BACK, 'login-credentials', false, true, false, false, $callback);
@@ -27,60 +93,3 @@ CREATE TABLE User (
     PRIMARY KEY (user_id)
 );
 */
-
-// registration
-$create_user_start = function ($msg) {
-    // extract username and password
-    list($username, $hashed_password) = explode(" | ", $msg->body);
-
-    // create query: add a user
-    $query = "INSERT INTO User (username, pass) VALUES ($username, $hashed_password);";
-    $query_msg = new AMQPMessage($query);
-
-    // send query to database
-    // basic_publish(AMQmessage, exchange, queue name)
-    $msg->getChannel()->basic_publish($query_msg, 'registration', BACK_DATA);
-};
-
-$create_user_end = function ($msg) {
-    // extract username and password from response
-    $response = new AMQPMessage("success");
-    if (str_contains($msg->body, "error")) {
-        $response = $msg;
-    }
-    $msg->getChannel()->basic_publish($response, 'registration', BACK_FRONT);
-};
-
-// log in
-$authenticate_user_get = function ($msg) {
-    // extract username and password
-    list($username, $hashed_password) = explode(" | ", $msg->body);
-
-    // create query: get a user
-    $query = "SELECT * FROM User WHERE username=$username;";
-    $query_msg = new AMQPMessage($query);
-
-    // send query to database
-    $msg->getChannel()->basic_publish($query_msg, 'login', BACK_DATA);
-};
-
-$authenticate_user_process = function ($msg) {
-    // extract username and password from response
-    $response = new AMQPMessage("success");
-    if (str_contains($msg->body, "error")) {
-        $response = $msg;
-    }
-    $msg->getChannel()->basic_publish($response, 'login', BACK_FRONT);
-};
-
-$channel->basic_consume(FRONT_BACK, 'registration', false, true, false, false, $create_user_start);
-$channel->basic_consume(BACK_FRONT, 'registration', false, true, false, false, $create_user_end);
-$channel->basic_consume(BACK_DATA, 'login', false, true, false, false, $authenticate_user_get);
-$channel->basic_consume(DATA_BACK, 'login', false, true, false, false, $authenticate_user_process);
-
-while ($channel->is_open()) {
-    $channel->wait();
-}
-
-$channel->close();
-$connection->close();
