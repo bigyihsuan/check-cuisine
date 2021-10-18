@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Check Cuisine Register Page</title>
+</head>
+<script>
+    function checkPasswords(form) {
+        let match = form.password.value == form.confirm.value;
+        if (!match) {
+            alert("Passwords don't match.");
+        }
+        return match;
+    }
+</script>
+
+<body>
+    <style>
+        * {
+            text-align: center;
+        }
+        
+        input {
+            border: 1px solid black;
+            break-after: auto;
+        }
+    </style>
+    <p> Registration Page </p>
+
+    <form method="POST" action="register.php">
+
+        <input name="username" type="text" placeholder="Enter your username" required /><br>
+
+        <input type="password" name="password" placeholder="Enter password" required /><br>
+
+        <input type="password" name="confirm" placeholder="Re-Enter password" required /><br>
+
+        <input type="submit" value="Register" />
+
+        <figcaption><a href="login.html"> Log In Here </a>
+            <figcaption>
+    </form>
+
+</body>
+
+</html>
