@@ -33,7 +33,7 @@ class Client
 
     public function send_query(string $query, int $code)
     {
-        $this->response = null;
+        $this->response = "";
         $this->correlation_id = uniqid();
 
         $message = new AMQPMessage($query, array(
