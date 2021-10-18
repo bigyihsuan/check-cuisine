@@ -19,7 +19,7 @@ else
     exit"
 fi
 
-ssh -l ${start_services_user[0]} ${databrabbit_serverase_server[0]} "ps cax | grep ${database_server[1]} > /dev/null"
+ssh -l ${start_services_user[0]} ${rabbit_server[0]} "ps cax | grep ${rabbit_server[1]} > /dev/null"
 if [ $? -eq 0 ]; then
     echo "${rabbit_server[1]} is running."
 else
