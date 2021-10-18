@@ -40,7 +40,7 @@ class Client
             "correlation_id" => $this->correlation_id,
             "reply_to" => $this->callback_queue
         ));
-        $this->channel->basic_publish($message, $code, $this->$queue_name);
+        $this->channel->basic_publish($message, $code, $this->queue_name);
 
         while (!$this->response) {
             $this->channel->wait();
