@@ -1,5 +1,5 @@
 <?php
-include "./servers.php";
+include_once "servers.php";
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -31,7 +31,7 @@ class Client
         }
     }
 
-    public function send_query(string $query, int $code): string|null
+    public function send_query(string $query, int $code)
     {
         $this->response = null;
         $this->correlation_id = uniqid();

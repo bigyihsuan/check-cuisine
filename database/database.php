@@ -1,6 +1,6 @@
 <?php
-include "../servers.php";
-include "../rabbit_endpoints.php";
+include_once "servers.php";
+include_once "rabbit_endpoints.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -11,6 +11,8 @@ $hostname = "localhost";
 $username = "test";
 $password = "test";
 $database = "test";
+
+$connection = new AMQPStreamConnection(rabbit_server, 5672, data_server_creds[0], data_server_creds[1]);
 
 $db = new mysqli($hostname, $username, $password, $database);
 if ($db->connect_errno) {

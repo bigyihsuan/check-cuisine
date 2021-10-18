@@ -1,13 +1,13 @@
 <?php
-include "../servers.php";
-include "../rabbit_endpoints.php";
+include_once "servers.php";
+include_once "rabbit_endpoints.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$connection = new AMQPStreamConnection($rabbit_server, 5672, $back_server_creds[0], $back_server_creds[1]);
+$connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
 $channel = $connection->channel();
 
 
@@ -54,7 +54,7 @@ $handle_front = function (AMQPMessage $request) {
     print("[BACK] received result from database");
     // generate message, based on prefix
     list($prefix, $body) = explode(" ", $result, 2);
-    $json = json_decode($body, associative: true);
+    $json = json_decode($body, $associative = true);
 
     switch ($prefix) {
         case Prefix::LOGIN:
