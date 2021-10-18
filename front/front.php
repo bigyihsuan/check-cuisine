@@ -32,5 +32,5 @@ function run_query($prefix)
             }
     }
 
-    $backend_client->send_query($query, $prefix);
+    return $backend_client->send_query($query, $prefix);
 }

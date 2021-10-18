@@ -20,10 +20,14 @@ if ($db->connect_errno) {
 $channel->queue_declare(DATA_BACK, true, false, false, false);
 $channel->queue_declare(BACK_DATA, true, false, false, false);
 
+print("[DATA] waiting for messages...");
+
 $handle_back = function ($request) {
     global $db;
+    print("[DATA] received query from back");
     // separate the prefix from the query
     list($prefix, $query) = explode(" ", $request->body, 2);
+    print("[DATA] $query");
     // execute the query
     ($result = $db->query($query)) or die();
     // get the rows
@@ -33,8 +37,10 @@ $handle_back = function ($request) {
     // create message
     $message = new AMQPMessage("$prefix $json", array("correlation_id" => $request->get("correlation_id")));
     // send message
+    print("[DATA] sending results to back...");
     $request->getChannel()->basic_publish($message, '', $request->get("reply_to"));
     $request->ack();
+    print("[DATA] sent results to back");
 };
 
 $channel->basic_consume(BACK_DATA, false, false, false, $handle_back);

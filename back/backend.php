@@ -19,10 +19,14 @@ $channel->queue_declare(DATA_BACK, true, false, false, false);
 
 $channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
 
+print("[BACK] waiting for messages...");
+
 $handle_front = function (AMQPMessage $request) {
+    print("[BACK] received message from front-end");
+
     $channel = $request->getChannel();
     // for sending queries to the database
-    $database_client = new Client($request->getChannel()->getConnection(), BACK_DATA);
+    $database_client = new Client($channel->getConnection(), BACK_DATA);
 
     list($prefix, $body) = explode(" ", $request->body, 2);
 
@@ -45,8 +49,9 @@ $handle_front = function (AMQPMessage $request) {
                 break;
             }
     }
+    print("[BACK] sending query $query");
     $result = $database_client->send_query($query, $prefix);
-
+    print("[BACK] received result from database");
     // generate message, based on prefix
     list($prefix, $body) = explode(" ", $result, 2);
     $json = json_decode($body, associative: true);
@@ -66,9 +71,11 @@ $handle_front = function (AMQPMessage $request) {
             }
     }
 
+    print("[BACK] sending result to front...");
     $message = new AMQPMessage("$prefix $result", array("correlation_id" => $request->get("correlation_id")));
     $request->getChannel()->basic_publish($message, '', $request->get("reply_to"));
     $request->ack();
+    print("[BACK] sent result to front");
 };
 
 // for sending responses back to the frontend
