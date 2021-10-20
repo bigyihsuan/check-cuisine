@@ -35,8 +35,8 @@ function run_query($prefix)
     return $backend_client->send_query($query, $prefix);
 }
 
+$body = readline("Enter message contnet: ");
 print("[FRONT] sending message to BACK...");
-$body = "FRONT sent";
 print("[FRONT] message = \"$body\"");
 $backend_client = new Client($connection, FRONT_BACK);
 $backend_client->send_query($body, 1234);
