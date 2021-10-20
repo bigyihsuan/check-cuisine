@@ -14,11 +14,12 @@ $database = "test";
 
 $connection = new AMQPStreamConnection(rabbit_server, 5672, data_server_creds[0], data_server_creds[1]);
 
-$db = new mysqli($hostname, $username, $password, $database);
-if ($db->connect_errno) {
-    exit();
-}
+// $db = new mysqli($hostname, $username, $password, $database);
+// if ($db->connect_errno) {
+//     exit();
+// }
 
+$channel = $connection->channel();
 $channel->queue_declare(DATA_BACK, true, false, false, false);
 $channel->queue_declare(BACK_DATA, true, false, false, false);
 
