@@ -24,7 +24,7 @@ $channel->queue_declare(BACK_DATA, true, false, false, false);
 
 print("[DATA] waiting for messages...");
 
-$handle_back = function ($request) {
+$handle_back = function (AMQPMessage $request) {
     global $db;
     print("[DATA] received query from back");
     // separate the prefix from the query
@@ -45,7 +45,21 @@ $handle_back = function ($request) {
     print("[DATA] sent results to back");
 };
 
-$channel->basic_consume(BACK_DATA, false, false, false, $handle_back);
+$test_handle_back = function (AMQPMessage $msg) {
+    print("[DATA] received query from back-end");
+
+    $body = $msg->getBody();
+    print("[DATA] message = \"$body\"");
+    print("[DATA] appending DATA to message and sending...");
+    $body .= "\nDATA receieved\nDATA sent";
+
+    $response = new AMQPMessage($body);
+    $msg->getChannel()->basic_publish($response, '', $msg->get("reply_to"));
+    $msg->ack();
+    print("[DATA] sent to BACK");
+};
+
+$channel->basic_consume(BACK_DATA, false, false, false, $test_handle_back);
 
 while ($channel->is_open()) {
     $channel->wait();

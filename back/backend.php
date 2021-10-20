@@ -78,8 +78,34 @@ $handle_front = function (AMQPMessage $request) {
     print("[BACK] sent result to front");
 };
 
+$test_handle_front = function ($msg) {
+    print("[BACK] received query from back-end");
+
+    $body = $msg->getBody();
+    print("[BACK] message = \"$body\"");
+    print("[BACK] appending BACK to message and sending...");
+    $body .= "\nBACK receieved";
+
+    print("[BACK] sending message to DATA");
+    $database_client = new Client($msg->getConnection(), BACK_DATA);
+    print("[BACK] sent message to DATA");
+    $result = $database_client->send_query($body, 123);
+    print("[BACK] received result from database");
+
+    $body = $result;
+    print("[BACK] message = \"$body\"");
+    print("[BACK] appending BACK to message and sending...");
+    $body .= "\nBACK sent";
+
+    $response = new AMQPMessage($body);
+    $msg->getChannel()->basic_publish($response, '', $msg->get("reply_to"));
+    $msg->ack();
+
+    print("[BACK] sent to DATA");
+};
+
 // for sending responses back to the frontend
-$channel->basic_consume(BACK_FRONT, false, false, false, $handle_front);
+$channel->basic_consume(BACK_FRONT, false, false, false, $test_handle_front);
 
 while ($channel->is_open()) {
     $channel->wait();

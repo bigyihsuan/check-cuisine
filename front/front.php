@@ -34,3 +34,13 @@ function run_query($prefix)
 
     return $backend_client->send_query($query, $prefix);
 }
+
+print("[FRONT] sending message to BACK...");
+$body = "FRONT sent";
+print("[FRONT] message = \"$body\"");
+$backend_client = new Client($connection, FRONT_BACK);
+$backend_client->send_query($body, 1234);
+print("[FRONT] appending FRONT to message and printing...");
+$body .= "\nFRONT receieved";
+print("[FRONT] message = \"$body\"");
+print("[FRONT] finished");
