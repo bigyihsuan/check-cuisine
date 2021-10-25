@@ -31,7 +31,7 @@ class Client
         }
     }
 
-    public function send_query(string $query, int|string $code)
+    public function send_query(string $query, string $code)
     {
         $this->response = "";
         $this->correlation_id = uniqid();
