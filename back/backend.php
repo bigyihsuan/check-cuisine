@@ -88,7 +88,9 @@ $test_handle_front = function (AMQPMessage $msg) {
     $body .= "\nBACK receieved";
 
     print("[BACK] sending message to DATA\n");
+    $response = new AMQPMessage($body);
     // $database_client = new Client($msg->getConnection(), BACK_DATA);
+    $channel->basic_publish($response, "", BACK_DATA);
 
     print("[BACK] sent message to DATA\n");
     $test_handle_data = function (AMQPMessage $msg) {
