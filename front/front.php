@@ -10,8 +10,8 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
 $channel = $connection->channel();
 
-$channel->queue_declare(FRONT_BACK, true, false, false, false);
-$channel->queue_declare(BACK_FRONT, true, false, false, false);
+$channel->queue_declare(FRONT_BACK, false, false, false, false);
+$channel->queue_declare(BACK_FRONT, false, false, false, false);
 
 function run_query($prefix)
 {

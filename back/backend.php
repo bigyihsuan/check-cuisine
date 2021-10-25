@@ -12,10 +12,10 @@ $channel = $connection->channel();
 
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
-$channel->queue_declare(FRONT_BACK, true, false, false, false);
-$channel->queue_declare(BACK_FRONT, true, false, false, false);
-$channel->queue_declare(BACK_DATA, true, false, false, false);
-$channel->queue_declare(DATA_BACK, true, false, false, false);
+$channel->queue_declare(FRONT_BACK, false, false, false, false);
+$channel->queue_declare(BACK_FRONT, false, false, false, false);
+$channel->queue_declare(BACK_DATA, false, false, false, false);
+$channel->queue_declare(DATA_BACK, false, false, false, false);
 
 // $channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
 
@@ -93,6 +93,7 @@ $test_handle_front = function (AMQPMessage $msg) {
     $channel->basic_publish($response, "", BACK_DATA);
 
     print("[BACK] sent message to DATA\n");
+
     $test_handle_data = function (AMQPMessage $msg) {
         // $result = $database_client->send_query($body, $msg->getExchange());
         $channel = $msg->getChannel();

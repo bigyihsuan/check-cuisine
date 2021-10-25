@@ -20,8 +20,8 @@ $connection = new AMQPStreamConnection(rabbit_server, 5672, data_server_creds[0]
 // }
 
 $channel = $connection->channel();
-$channel->queue_declare(DATA_BACK, true, false, false, false);
-$channel->queue_declare(BACK_DATA, true, false, false, false);
+$channel->queue_declare(DATA_BACK, false, false, false, false);
+$channel->queue_declare(BACK_DATA, false, false, false, false);
 
 print("[DATA] waiting for messages...");
 
