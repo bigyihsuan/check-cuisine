@@ -89,7 +89,7 @@ $test_handle_front = function ($msg) {
     print("[BACK] sending message to DATA");
     $database_client = new Client($msg->getConnection(), BACK_DATA);
     print("[BACK] sent message to DATA");
-    $result = $database_client->send_query($body, 123);
+    $result = $database_client->send_query($body, $msg->getExchange());
     print("[BACK] received result from database");
 
     $body = $result;
@@ -98,7 +98,7 @@ $test_handle_front = function ($msg) {
     $body .= "\nBACK sent";
 
     $response = new AMQPMessage($body);
-    $msg->getChannel()->basic_publish($response, '', $msg->get("reply_to"));
+    $msg->getChannel()->basic_publish($response, $msg->getExchange(), $msg->get("reply_to"));
     $msg->ack();
 
     print("[BACK] sent to DATA");

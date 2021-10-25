@@ -39,7 +39,7 @@ $body = readline("Enter message contnet: ");
 print("[FRONT] sending message to BACK...");
 print("[FRONT] message = \"$body\"");
 $backend_client = new Client($connection, FRONT_BACK);
-$backend_client->send_query($body, 1234);
+$body = $backend_client->send_query($body, 1234);
 print("[FRONT] appending FRONT to message and printing...");
 $body .= "\nFRONT receieved";
 print("[FRONT] message = \"$body\"");
