@@ -17,11 +17,11 @@ $channel->queue_declare(BACK_FRONT, true, false, false, false);
 $channel->queue_declare(BACK_DATA, true, false, false, false);
 $channel->queue_declare(DATA_BACK, true, false, false, false);
 
-$channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
+// $channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
 
 print("[BACK] waiting for messages...");
 
-$handle_front = function (AMQPMessage $request) {
+$handle_messages_from_front = function (AMQPMessage $request) {
     print("[BACK] received message from front-end");
 
     $channel = $request->getChannel();
@@ -105,7 +105,7 @@ $test_handle_front = function ($msg) {
 };
 
 // for sending responses back to the frontend
-// $channel->basic_consume(BACK_FRONT, false, false, false, $test_handle_front);
+$channel->basic_consume(FRONT_BACK, false, false, false, $test_handle_front);
 
 while ($channel->is_open()) {
     $channel->wait();
