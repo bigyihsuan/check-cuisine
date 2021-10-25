@@ -3,7 +3,7 @@
 const front_server = "25.53.122.72"; // yasu
 const rabbit_server = "25.77.32.88"; // jeff
 const back_server = "25.51.190.242"; // yi-hsuan
-const database_server = "25.8.159.27"; // jakub
+const database_server = "25.53.49.9"; // jakub
 
 const back_server_creds = ["backend", "back"];
 const front_server_creds = ["frontend", "front"];
