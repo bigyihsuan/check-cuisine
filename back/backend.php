@@ -105,7 +105,7 @@ $test_handle_front = function ($msg) {
 };
 
 // for sending responses back to the frontend
-$channel->basic_consume(FRONT_BACK, false, false, false, $test_handle_front);
+$channel->basic_consume(FRONT_BACK, false, true, false, $test_handle_front);
 
 while ($channel->is_open()) {
     $channel->wait();
