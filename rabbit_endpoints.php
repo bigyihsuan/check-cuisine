@@ -19,7 +19,7 @@ class Client
     {
         $this->connection = $connection;
         $this->channel = $this->connection->channel();
-        list($this->callback_queue,,) = $this->channel->queue_declare("", false, false, true, false);
+        list($this->callback_queue,,) = $this->channel->queue_declare("", false, false, false, false);
         $this->channel->basic_consume($this->callback_queue, "", false, true, false, false, array($this, "onResponse"));
         $this->queue_name = $queue_name;
     }

@@ -37,10 +37,13 @@ function run_query($prefix)
 
 $body = readline("Enter message contnet: ");
 print("[FRONT] sending message to BACK...");
-print("[FRONT] message = \"$body\"");
+print("[FRONT] message = \"$body\"\n");
+
 $backend_client = new Client($connection, FRONT_BACK);
 $body = $backend_client->send_query($body, "");
+
 print("[FRONT] appending FRONT to message and printing...");
 $body .= "\nFRONT receieved";
-print("[FRONT] message = \"$body\"");
-print("[FRONT] finished");
+
+print("[FRONT] message = \"$body\"\n");
+print("[FRONT] finished\n");

@@ -56,7 +56,6 @@ $test_handle_back = function (AMQPMessage $msg) {
 
     $response = new AMQPMessage($body);
     $msg->getChannel()->basic_publish($response, $msg->getExchange(), $msg->get("reply_to"));
-    $msg->ack();
     print("[DATA] sent to BACK");
 };
 
