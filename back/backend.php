@@ -91,7 +91,7 @@ $test_handle_front = function (AMQPMessage $msg) {
     // $database_client = new Client($msg->getConnection(), BACK_DATA);
 
     print("[BACK] sent message to DATA\n");
-    -$test_handle_data = function (AMQPMessage $msg) {
+    $test_handle_data = function (AMQPMessage $msg) {
         // $result = $database_client->send_query($body, $msg->getExchange());
         $channel = $msg->getChannel();
         print("[BACK] received message from DATA\n");
@@ -107,7 +107,7 @@ $test_handle_front = function (AMQPMessage $msg) {
         print("[BACK] sent to FRONT\n");
     };
 
-    $channel->basic_consume(DATA_BACK, false, true, false, $test_handle_data);
+    $channel->basic_consume(DATA_BACK, "", $test_handle_data);
 
     while ($channel->is_open()) {
         $channel->wait();
@@ -118,7 +118,7 @@ $test_handle_front = function (AMQPMessage $msg) {
 };
 
 // for sending responses back to the frontend
-$channel->basic_consume(FRONT_BACK, false, true, false, $test_handle_front);
+$channel->basic_consume(FRONT_BACK, "", $test_handle_front);
 
 while ($channel->is_open()) {
     $channel->wait();
