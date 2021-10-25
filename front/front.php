@@ -39,11 +39,27 @@ $body = readline("Enter message contnet: ");
 print("[FRONT] sending message to BACK...\n");
 print("[FRONT] message = \"$body\"\n");
 
-$backend_client = new Client($connection, FRONT_BACK);
-$body = $backend_client->send_query($body, "");
+// $backend_client = new Client($connection, FRONT_BACK);
+// $body = $backend_client->send_query($body, "");
 
-print("[FRONT] appending FRONT to message and printing...");
-$body .= "\nFRONT receieved";
+$message = new AMQPMessage($body);
+$channel->basic_publish($message, "", FRONT_BACK);
 
-print("[FRONT] message = \"$body\"\n");
-print("[FRONT] finished\n");
+$handle_back_to_front = function (AMQPMessage $message) {
+    print("[FRONT] received message from BACK!\n");
+    $body = $message->getBody();
+    print("[FRONT] appending FRONT to message and printing...\n");
+    $body .= "\nFRONT receieved";
+
+    print("[FRONT] message = \"$body\"\n");
+    print("[FRONT] finished\n");
+};
+
+$channel->basic_consume(BACK_FRONT, $handle_back_to_front);
+
+while ($channel->is_open()) {
+    $channel->wait();
+}
+
+$channel->close();
+$connection->close();
