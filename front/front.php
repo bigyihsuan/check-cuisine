@@ -55,7 +55,7 @@ $handle_back_to_front = function (AMQPMessage $message) {
     print("[FRONT] finished\n");
 };
 
-$channel->basic_consume(BACK_FRONT, $handle_back_to_front);
+$channel->basic_consume(BACK_FRONT, "", $handle_back_to_front);
 
 while ($channel->is_open()) {
     $channel->wait();
