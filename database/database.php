@@ -12,16 +12,18 @@ $username = "test";
 $password = "test";
 $database = "test";
 
-$connection = new AMQPStreamConnection(rabbit_server, 5672, data_server_creds[0], data_server_creds[1]);
+$publish_connection = new AMQPStreamConnection(rabbit_server, 5672, data_server_creds[0], data_server_creds[1]);
+$consume_connection = new AMQPStreamConnection(rabbit_server, 5672, data_server_creds[0], data_server_creds[1]);
 
 // $db = new mysqli($hostname, $username, $password, $database);
 // if ($db->connect_errno) {
 //     exit();
 // }
 
-$channel = $connection->channel();
-$channel->queue_declare(DATA_BACK, false, true, false, false);
-$channel->queue_declare(BACK_DATA, false, true, false, false);
+$publish_channel = $publish_connection->channel();
+$publish_channel = $consume_connection->channel();
+
+$publish_channel->queue_declare(BACK_DATA, false, true, false, false);
 
 print("[DATA] waiting for messages...");
 
@@ -47,6 +49,7 @@ $handle_back = function (AMQPMessage $request) {
 };
 
 $test_handle_back = function (AMQPMessage $msg) {
+    global $consume_channel;
     print("[DATA] received query from back-end");
 
     $body = $msg->getBody();
@@ -55,15 +58,17 @@ $test_handle_back = function (AMQPMessage $msg) {
     $body .= "\nDATA receieved\nDATA sent";
 
     $response = new AMQPMessage($body);
-    $msg->getChannel()->basic_publish($response, "", DATA_BACK);
+    $consume_channel->basic_publish($response, "", DATA_BACK);
     print("[DATA] sent to BACK");
 };
 
-$channel->basic_consume(BACK_DATA, "", $test_handle_back);
+$publish_channel->basic_consume(BACK_DATA, "", $test_handle_back);
 
-while ($channel->is_open()) {
-    $channel->wait();
+while ($publish_channel->is_open()) {
+    $publish_channel->wait();
 }
 
-$channel->close();
-$connection->close();
+$publish->close();
+$consume->close();
+$publish_channel->close();
+$consume_channel->close();

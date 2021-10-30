@@ -7,15 +7,23 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
-$channel = $connection->channel();
+$front_publish_connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
+$front_consume_connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
+$data_publish_connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
+$data_consume_connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
+
+$front_publish_channel = $front_publish_connection->channel();
+$front_consume_channel = $front_consume_connection->channel();
+$data_publish_channel = $data_publish_connection->channel();
+$data_consume_channel = $data_consume_connection->channel();
 
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
-$channel->queue_declare(FRONT_BACK, false, true, false, false);
-$channel->queue_declare(BACK_FRONT, false, true, false, false);
-$channel->queue_declare(BACK_DATA, false, true, false, false);
-$channel->queue_declare(DATA_BACK, false, true, false, false);
+// $channel->queue_declare(BACK_FRONT, false, true, false, false);
+// $channel->queue_declare(BACK_DATA, false, true, false, false);
+
+$front_publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
+$data_publish_channel->queue_declare(DATA_BACK, false, true, false, false);
 
 // $channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
 
@@ -79,7 +87,7 @@ $handle_messages_from_front = function (AMQPMessage $request) {
 };
 
 $test_handle_front = function (AMQPMessage $msg) {
-    $channel = $msg->getChannel();
+    global $data_publish_channel, $data_consume_channel;
     print("[BACK] received query from front-end\n");
 
     $body = $msg->getBody();
@@ -90,13 +98,13 @@ $test_handle_front = function (AMQPMessage $msg) {
     print("[BACK] sending message to DATA\n");
     $response = new AMQPMessage($body);
     // $database_client = new Client($msg->getConnection(), BACK_DATA);
-    $channel->basic_publish($response, "", BACK_DATA);
+    $data_publish_channel->basic_publish($response, "", BACK_DATA);
 
     print("[BACK] sent message to DATA\n");
 
     $test_handle_data = function (AMQPMessage $msg) {
+        global $front_publish_channel;
         // $result = $database_client->send_query($body, $msg->getExchange());
-        $channel = $msg->getChannel();
         print("[BACK] received message from DATA\n");
 
         $body = $msg->getBody();
@@ -105,30 +113,33 @@ $test_handle_front = function (AMQPMessage $msg) {
         $body .= "\nBACK sent";
 
         $response = new AMQPMessage($body);
-        $channel->basic_publish($response, "", BACK_FRONT);
+        $front_publish_channel->basic_publish($response, "", BACK_FRONT);
 
         print("[BACK] sent to FRONT\n");
     };
+    $data_consume_channel->basic_consume(BACK_DATA, "", $test_handle_data);
 
-    $channel->basic_consume(DATA_BACK, "", $test_handle_data);
-
-    while ($channel->is_open()) {
-        $channel->wait();
+    while ($data_consume_channel->is_open()) {
+        $data_consume_channel->wait();
     }
-
-    $channel->close();
-    $channel->getConnection()->close();
 };
 
 // for sending responses back to the frontend
-$channel->basic_consume(FRONT_BACK, "", $test_handle_front);
+$front_consume_channel->basic_consume(FRONT_BACK, "", $test_handle_front);
 
-while ($channel->is_open()) {
-    $channel->wait();
+while ($front_consume_channel->is_open()) {
+    $front_consume_channel->wait();
 }
 
-$channel->close();
-$connection->close();
+$front_publish_connection->close();
+$front_consume_connection->close();
+$data_publish_connection->close();
+$data_consume_connection->close();
+
+$front_publish_channel->close();
+$front_consume_channel->close();
+$data_publish_channel->close();
+$data_consume_channel->close();
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 // $channel->basic_consume(FRONT_BACK, 'login-credentials', false, true, false, false, $callback);
