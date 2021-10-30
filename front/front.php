@@ -65,8 +65,8 @@ $handle_back_to_front = function (AMQPMessage $message) {
     $message = new AMQPMessage($body);
     $publish_channel->basic_publish($message, "", FRONT_BACK);
    
-    //print("[FRONT] appending FRONT to message and printing...\n");
-    //$body .= "\nFRONT receieved";
+    print("[FRONT] appending FRONT to message and printing...\n");
+    $body .= "\nFRONT receieved";
     
     print("[FRONT] message = \"$body\"\n");
     print("[FRONT] finished\n");    
