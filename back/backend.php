@@ -94,13 +94,13 @@ $test_handle_front = function (AMQPMessage $msg) {
     print("[BACK] message = \"$body\"\n");
     print("[BACK] appending BACK to message and sending...\n");
     $body .= "\nBACK receieved";
-
-    print("[BACK] sending message to DATA\n");
     $response = new AMQPMessage($body);
+    /*
+    print("[BACK] sending message to DATA\n");
     // $database_client = new Client($msg->getConnection(), BACK_DATA);
     $data_publish_channel->basic_publish($response, "", BACK_DATA);
-
     print("[BACK] sent message to DATA\n");
+    */
 
     $test_handle_data = function (AMQPMessage $msg) {
         global $front_publish_channel;
@@ -113,15 +113,20 @@ $test_handle_front = function (AMQPMessage $msg) {
         $body .= "\nBACK sent";
 
         $response = new AMQPMessage($body);
-        $front_publish_channel->basic_publish($response, "", BACK_FRONT);
+        $front_publish_channel->basic_publish($response, "", FRONT_BACK);
 
         print("[BACK] sent to FRONT\n");
     };
+
+    $test_handle_data($response);
+
+    /*
     $data_consume_channel->basic_consume(BACK_DATA, "", $test_handle_data);
 
     while ($data_consume_channel->is_open()) {
         $data_consume_channel->wait();
     }
+    */
 };
 
 // for sending responses back to the frontend
