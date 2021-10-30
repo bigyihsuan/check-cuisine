@@ -60,7 +60,7 @@ $handle_back_to_front = function (AMQPMessage $message) {
 $handle_back_to_front = function (AMQPMessage $message) {
     global $publish_channel;
     
-    print ' [x] Received ', $message->body, "\n";
+    echo ' [x] Received ', $message->body, "\n";
     $body = readline("Enter message content: ");
     $message = new AMQPMessage($body);
     $publish_channel->basic_publish($message, "", FRONT_BACK);
