@@ -39,7 +39,7 @@ function run_query($prefix)
 
 // $backend_client = new Client($connection, FRONT_BACK);
 // $body = $backend_client->send_query($body, "");
-
+/*
 $body = readline("Enter message content: ");
 print("[FRONT] sending message to BACK...\n");
 print("[FRONT] message = \"$body\"\n");
@@ -55,8 +55,23 @@ $handle_back_to_front = function (AMQPMessage $message) {
     print("[FRONT] message = \"$body\"\n");
     print("[FRONT] finished\n");
 };
+*/
 
-$consume_channel->basic_consume(FRONT_BACK, "", autoAck == true, $handle_back_to_front);
+$handle_back_to_front = function (AMQPMessage $message) {
+    global $publish_channel;
+    
+    print("[FRONT] received message from BACK!\n");
+    $body = readline("Enter message content: ");
+    $message = new AMQPMessage($body);
+    $publish_channel->basic_publish($message, "", FRONT_BACK);
+    /*
+    print("[FRONT] appending FRONT to message and printing...\n");
+    $body .= "\nFRONT receieved";
+    */
+    print("[FRONT] message = \"$body\"\n");
+    print("[FRONT] finished\n");
+    
+$consume_channel->basic_consume(FRONT_BACK, "", false, true, false, false, $handle_back_to_front);
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
@@ -66,3 +81,15 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
+/*
+$consume_channel->basic_consume(FRONT_BACK, "", $handle_back_to_front);
+
+while ($consume_channel->is_open()) {
+    $consume_channel->wait();
+}
+
+$publish->close();
+$consume->close();
+$publish_channel->close();
+$consume_channel->close();
+*/
