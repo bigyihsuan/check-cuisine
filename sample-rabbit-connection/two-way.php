@@ -23,21 +23,23 @@ if (isset($argv[1])) {
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function (AMQPMessage $msg) {
-    global $consume_channel;
+    global $publish_channel;
 
     echo ' [x] Received ', $msg->body, "\n";
     $m = readline("Message: ");
     $msg = new AMQPMessage($m);
-    $consume_channel->basic_publish($msg, '', 'hello');
+    $publish_channel->basic_publish($msg, '', 'hello');
     echo "Sent '$m'\n";
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $consume_channel->basic_consume('hello', '', false, true, false, false, $callback);
 
-while ($channel->is_open()) {
-    $channel->wait();
+while ($consume_channel->is_open()) {
+    $consume_channel->wait();
 }
 
-$channel->close();
-$connection->close();
+$publish->close();
+$consume->close();
+$publish_channel->close();
+$consume_channel->close();
