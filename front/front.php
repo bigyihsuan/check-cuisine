@@ -73,7 +73,7 @@ if (isset($argv[1])) {
     echo "Sent '{$msg->getBody()}'\n";
 }
 
-echo " [*] Waiting for messages. To exit press CTRL+C\n";
+//echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
@@ -86,7 +86,7 @@ $callback = function (AMQPMessage $msg) {
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-$consume_channel->basic_consume(FRONT_BACK, '', false, true, false, false, $callback);
+$consume_channel->basic_consume(FRONT_BACK, '', false, false, false, false, $callback);
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
