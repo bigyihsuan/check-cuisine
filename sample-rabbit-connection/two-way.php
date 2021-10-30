@@ -10,7 +10,7 @@ $connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0]
 $channel = $connection->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
-$channel->queue_declare('hello', false, false, false, false);
+$channel->queue_declare('hello', false, true, false, false);
 
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
@@ -22,7 +22,6 @@ echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function (AMQPMessage $msg) {
     echo ' [x] Received ', $msg->body, "\n";
-
     $m = readline("Message: ");
     $msg = new AMQPMessage($m);
     $msg->getChannel()->basic_publish($msg, '', 'hello');
