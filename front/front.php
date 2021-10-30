@@ -11,6 +11,7 @@ $publish_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server
 $consume_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
 $publish_channel = $publish_connection->channel();
 $consume_channel = $consume_connection->channel();
+$channel = $connection->channel();
 
 $publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
 // $channel->queue_declare(BACK_FRONT, false, true, false, false);
