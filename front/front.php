@@ -9,8 +9,8 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 $exchange = 'router';
-$queue = 'msgs';
-$consumerTag = 'consumer';
+$queue = 'FRONT_BACK';
+$consumerTag = 'BACK_DATA';
 
 $publish_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
 $consume_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
