@@ -69,8 +69,8 @@ $handle_back_to_front = function (AMQPMessage $message) {
     $body .= "\nFRONT receieved";
     */
     print("[FRONT] message = \"$body\"\n");
-    print("[FRONT] finished\n");
-    
+    print("[FRONT] finished\n");    
+
 $consume_channel->basic_consume(FRONT_BACK, "", false, true, false, false, $handle_back_to_front);
 
 while ($consume_channel->is_open()) {
@@ -81,15 +81,3 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-/*
-$consume_channel->basic_consume(FRONT_BACK, "", $handle_back_to_front);
-
-while ($consume_channel->is_open()) {
-    $consume_channel->wait();
-}
-
-$publish->close();
-$consume->close();
-$publish_channel->close();
-$consume_channel->close();
-*/
