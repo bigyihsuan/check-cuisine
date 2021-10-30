@@ -55,8 +55,8 @@ $handle_back_to_front = function (AMQPMessage $message) {
     print("[FRONT] message = \"$body\"\n");
     print("[FRONT] finished\n");
 };
-
-$consume_channel->basic_consume(FRONT_BACK, "", $handle_back_to_front);
+boolean autoAck == false;
+$consume_channel->basic_consume(FRONT_BACK, "", autoAck, $handle_back_to_front);
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
