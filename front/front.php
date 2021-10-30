@@ -71,34 +71,18 @@ $publish_channel->close();
 $consume_channel->close();
 */
     
-$consume_channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
+echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
-$consume_channel->queue_bind($backend_client, $exchange);
+$callback = function ($msg) {
+    echo ' [x] Received ', $msg->body, "\n";
+};
 
-function process_message($message)
-{
-    echo "\n--------\n";
-    echo $message->body;
-    echo "\n--------\n";
+$channel->basic_consume('FRONT_BACK', '', false, true, false, false, $callback);
 
-    $message->ack();
-
-    if ($message->body === 'quit') {
-        $message->getChannel()->basic_cancel($message->getConsumerTag());
-    }
+while ($channel->is_consuming()) {
+    $channel->wait();
 }
 
-$consume_channel->basic_consume($backend_client, $backend_client, false, false, false, false, 'process_message');
-
-function shutdown($consume_channel, $connection)
-{
-    $channel->close();
-    $connection->close();
-}
-
-register_shutdown_function('shutdown', $consume_channel, $connection);
-
-
-while ($consume_channel->is_consuming()) {
-    $consume_channel->wait();
-}
+$channel->close();
+$connection->close();
+?>
