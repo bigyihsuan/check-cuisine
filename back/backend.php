@@ -126,6 +126,8 @@ $test_handle_front = function (AMQPMessage $msg) {
     while ($data_consume_channel->is_open()) {
         $data_consume_channel->wait();
     }
+    $data_consume_channel->close();
+    $data_consume_connection->close();
     */
 };
 
@@ -139,12 +141,10 @@ while ($front_consume_channel->is_open()) {
 $front_publish_connection->close();
 $front_consume_connection->close();
 $data_publish_connection->close();
-$data_consume_connection->close();
 
 $front_publish_channel->close();
 $front_consume_channel->close();
 $data_publish_channel->close();
-$data_consume_channel->close();
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 // $channel->basic_consume(FRONT_BACK, 'login-credentials', false, true, false, false, $callback);
