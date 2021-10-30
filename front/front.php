@@ -49,7 +49,7 @@ $publish_channel->basic_publish($message, "", FRONT_BACK);
 
 $handle_back_to_front = function (AMQPMessage $message) {
     print("[FRONT] received message from BACK!\n");
-    $body = $message->getBody()->ack();
+    $body = $message->getBody();
     //$message->ack();
     //$message->delivery_info['channel']->basic_ack($message->delivery_info['deliver_tag']);
     print("[FRONT] appending FRONT to message and printing...\n");
