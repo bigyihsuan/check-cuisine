@@ -12,10 +12,10 @@ $channel = $connection->channel();
 
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
-$channel->queue_declare(FRONT_BACK, false, false, false, false);
-$channel->queue_declare(BACK_FRONT, false, false, false, false);
-$channel->queue_declare(BACK_DATA, false, false, false, false);
-$channel->queue_declare(DATA_BACK, false, false, false, false);
+$channel->queue_declare(FRONT_BACK, false, true, false, false);
+$channel->queue_declare(BACK_FRONT, false, true, false, false);
+$channel->queue_declare(BACK_DATA, false, true, false, false);
+$channel->queue_declare(DATA_BACK, false, true, false, false);
 
 // $channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
 
