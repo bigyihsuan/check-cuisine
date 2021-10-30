@@ -44,12 +44,12 @@ $body = readline("Enter message content: ");
 print("[FRONT] sending message to BACK...\n");
 print("[FRONT] message = \"$body\"\n");
 $message = new AMQPMessage($body);
-$message->ack();
+//$message->ack();
 $publish_channel->basic_publish($message, "", FRONT_BACK);
 
 $handle_back_to_front = function (AMQPMessage $message) {
     print("[FRONT] received message from BACK!\n");
-    $body = $message->getBody();
+    $body = $message->getBody()->ack();
     //$message->ack();
     //$message->delivery_info['channel']->basic_ack($message->delivery_info['deliver_tag']);
     print("[FRONT] appending FRONT to message and printing...\n");
