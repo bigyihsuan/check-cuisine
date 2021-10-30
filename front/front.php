@@ -77,7 +77,7 @@ $callback = function ($msg) {
     echo ' [x] Received ', $msg->body, "\n";
 };
 
-$channel->basic_consume('FRONT_BACK', '', false, true, false, false, $callback);
+$consume_channel->basic_consume('FRONT_BACK', '', false, true, false, false, $callback);
 
 while ($channel->is_consuming()) {
     $channel->wait();
