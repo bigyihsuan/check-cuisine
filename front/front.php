@@ -50,7 +50,7 @@ $handle_back_to_front = function (AMQPMessage $message) {
     print("[FRONT] received message from BACK!\n");
     $body = $message->getBody();
     $message->ack();
-    $messahe->delivery_info['channel']->basic_ack($message->delivery_info['deliver_tag']);
+    $message->delivery_info['channel']->basic_ack($message->delivery_info['deliver_tag']);
     print("[FRONT] appending FRONT to message and printing...\n");
     $body .= "\nFRONT receieved";
 
