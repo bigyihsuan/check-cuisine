@@ -25,7 +25,7 @@ $callback = function (AMQPMessage $msg) {
 
     $m = readline("Message: ");
     $msg = new AMQPMessage($m);
-    $msg->getchannel()->basic_publish($msg, '', 'hello');
+    $msg->getChannel()->basic_publish($msg, '', 'hello');
     echo "Sent '$m'\n";
 };
 
