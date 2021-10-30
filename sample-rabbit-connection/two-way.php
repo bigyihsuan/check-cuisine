@@ -16,7 +16,7 @@ $publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
 
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
-    $publish_channel->basic_publish($msg, '', 'hello');
+    $publish_channel->basic_publish($msg, '', FRONT_BACK);
     echo "Sent '{$msg->getBody()}'\n";
 }
 
