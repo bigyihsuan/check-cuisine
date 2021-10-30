@@ -6,7 +6,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+
 use PhpAmqpLib\Exchange\AMQPExchangeType;
+$exchange = 'router';
+$queue = 'msgs';
+$consumerTag = 'consumer';
 
 $publish_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
 $consume_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
@@ -73,9 +77,6 @@ $consume_channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, t
 
 $consume_channel->queue_bind($queue, $exchange);
 
-/**
- * @param \PhpAmqpLib\Message\AMQPMessage $message
- */
 function process_message($message)
 {
     echo "\n--------\n";
@@ -84,28 +85,13 @@ function process_message($message)
 
     $message->ack();
 
-    // Send a message with the string "quit" to cancel the consumer.
     if ($message->body === 'quit') {
         $message->getChannel()->basic_cancel($message->getConsumerTag());
     }
 }
 
-/*
-    queue: Queue from where to get the messages
-    consumer_tag: Consumer identifier
-    no_local: Don't receive messages published by this consumer.
-    no_ack: If set to true, automatic acknowledgement mode will be used by this consumer. See https://www.rabbitmq.com/confirms.html for details.
-    exclusive: Request exclusive consumer access, meaning only this consumer can access the queue
-    nowait:
-    callback: A PHP Callback
-*/
-
 $consume_channel->basic_consume($queue, $consumerTag, false, false, false, false, 'process_message');
 
-/**
- * @param \PhpAmqpLib\Channel\AMQPChannel $channel
- * @param \PhpAmqpLib\Connection\AbstractConnection $connection
- */
 function shutdown($channel, $connection)
 {
     $channel->close();
@@ -114,7 +100,7 @@ function shutdown($channel, $connection)
 
 register_shutdown_function('shutdown', $channel, $connection);
 
-// Loop as long as the channel has callbacks registered
+
 while ($channel->is_consuming()) {
     $channel->wait();
 }
