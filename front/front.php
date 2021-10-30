@@ -11,7 +11,6 @@ $publish_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server
 $consume_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
 $publish_channel = $publish_connection->channel();
 $consume_channel = $consume_connection->channel();
-$channel = $connection->channel();
 
 $publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
 // $channel->queue_declare(BACK_FRONT, false, true, false, false);
@@ -69,9 +68,9 @@ $publish_channel->close();
 $consume_channel->close();
 */
     
-$channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
+$consume_channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
 
-$channel->queue_bind($queue, $exchange);
+$consume_channel->queue_bind($queue, $exchange);
 
 /**
  * @param \PhpAmqpLib\Message\AMQPMessage $message
@@ -100,7 +99,7 @@ function process_message($message)
     callback: A PHP Callback
 */
 
-$channel->basic_consume($queue, $consumerTag, false, false, false, false, 'process_message');
+$consume_channel->basic_consume($queue, $consumerTag, false, false, false, false, 'process_message');
 
 /**
  * @param \PhpAmqpLib\Channel\AMQPChannel $channel
