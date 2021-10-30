@@ -68,6 +68,7 @@ $body = readline("Enter message content: ");
 print("[FRONT] sending message to BACK...\n");
 print("[FRONT] message = \"$body\"\n");
 $message = new AMQPMessage($body);
+$message->ack();
 $publish_channel->basic_publish($message, "", FRONT_BACK);
 
 $handle_back_to_front = function (AMQPMessage $message) {
