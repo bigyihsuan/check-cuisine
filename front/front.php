@@ -9,8 +9,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 $exchange = 'router';
-$queue = 'FRONT_BACK';
-$consumerTag = 'BACK_DATA';
 
 $publish_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
 $consume_connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
@@ -75,7 +73,7 @@ $consume_channel->close();
     
 $consume_channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
 
-$consume_channel->queue_bind($queue, $exchange);
+$consume_channel->queue_bind($backend_client, $exchange);
 
 function process_message($message)
 {
@@ -90,17 +88,17 @@ function process_message($message)
     }
 }
 
-$consume_channel->basic_consume($queue, $consumerTag, false, false, false, false, 'process_message');
+$consume_channel->basic_consume($backend_client, $backend_client, false, false, false, false, 'process_message');
 
-function shutdown($channel, $connection)
+function shutdown($consume_channel, $connection)
 {
     $channel->close();
     $connection->close();
 }
 
-register_shutdown_function('shutdown', $channel, $connection);
+register_shutdown_function('shutdown', $consume_channel, $connection);
 
 
-while ($channel->is_consuming()) {
-    $channel->wait();
+while ($consume_channel->is_consuming()) {
+    $consume_channel->wait();
 }
