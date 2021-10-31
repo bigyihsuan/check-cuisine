@@ -33,7 +33,7 @@ $callback = function (AMQPMessage $msg) {
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-$consume_channel->basic_consume(FRONT_DATA, '', false, true, false, false, $callback);
+$consume_channel->basic_consume(FRONT_BACK, '', false, true, false, false, $callback);
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
