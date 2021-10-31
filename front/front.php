@@ -42,7 +42,7 @@ function run_query($prefix)
 
 // $backend_client = new Client($connection, FRONT_BACK);
 // $body = $backend_client->send_query($body, "");
-/*
+
 $body = readline("Enter message content: ");
 print("[FRONT] sending message to BACK...\n");
 print("[FRONT] message = \"$body\"\n");
@@ -69,20 +69,3 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-*/
-    
-echo " [*] Waiting for messages. To exit press CTRL+C\n";
-
-$callback = function ($msg) {
-    echo ' [x] Received ', $msg->body, "\n";
-};
-
-$consume_channel->basic_consume('FRONT_BACK', '', false, true, false, false, $callback);
-
-while ($channel->is_consuming()) {
-    $channel->wait();
-}
-
-$channel->close();
-$connection->close();
-?>
