@@ -13,11 +13,21 @@ $channel = $connection->channel();
 $channel->queue_declare('FRONT_BACK', false, false, false, false);
 
 
-if (isset($argv[1])) {
-    $msg = new AMQPMessage($argv[1]);
-    $hannel->basic_publish($msg, '', FRONT_BACK);
-    echo "Sent '{$msg->getBody()}'\n";
-}
+body = readline("Enter message content: ");
+print("[FRONT] sending message to BACK...\n");
+print("[FRONT] message = \"$body\"\n");
+$message = new AMQPMessage($body);
+$publish_channel->basic_publish($message, "", FRONT_BACK);
+
+$handle_back_to_front = function (AMQPMessage $message) {
+    print("[FRONT] received message from BACK!\n");
+    $body = $message->getBody();
+    print("[FRONT] appending FRONT to message and printing...\n");
+    $body .= "\nFRONT receieved";
+
+    print("[FRONT] message = \"$body\"\n");
+    print("[FRONT] finished\n");
+};
 /*
 for ($i = 0; $i < $end; $i++) {
     $m = readline("Message $i: ");
