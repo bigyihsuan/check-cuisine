@@ -10,13 +10,13 @@ $connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0]
 $channel = $connection->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
-$channel->queue_declare('Messaging', false, false, false, false);
+$channel->queue_declare('back-data', false, true, false, false);
 
 $end = 1;
 for ($i = 0; $i < $end; $i++) {
     $m = readline("Message $i: ");
     $msg = new AMQPMessage("$i $m");
-    $channel->basic_publish($msg, '', 'Messaging');
+    $channel->basic_publish($msg, '', 'back-data');
 
     echo "Sent '$m'\n";
 }
