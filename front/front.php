@@ -17,7 +17,7 @@ $consume_channel = $consume_connection->channel();
 
 $publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
 // $channel->queue_declare(BACK_FRONT, false, true, false, false);
-/*
+
 function run_query($prefix)
 {
     global $connection, $username, $password;
@@ -39,7 +39,7 @@ function run_query($prefix)
 
     return $backend_client->send_query($query, $prefix);
 }
-*/
+
 // $backend_client = new Client($connection, FRONT_BACK);
 // $body = $backend_client->send_query($body, "");
 
@@ -59,7 +59,7 @@ $handle_back_to_front = function (AMQPMessage $message) {
     print("[FRONT] finished\n");
 };
 
-$consume_channel->basic_consume(FRONT_BACK, "", $handle_back_to_front);
+$consume_channel->basic_consume(BACK_DATA, "", $handle_back_to_front);
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
