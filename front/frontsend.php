@@ -12,6 +12,13 @@ $channel = $connection->channel();
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $channel->queue_declare('FRONT_BACK', false, false, false, false);
 
+
+if (isset($argv[1])) {
+    $msg = new AMQPMessage($argv[1]);
+    $publish_channel->basic_publish($msg, '', FRONT_BACK);
+    echo "Sent '{$msg->getBody()}'\n";
+}
+/*
 for ($i = 0; $i < $end; $i++) {
     $m = readline("Message $i: ");
     $msg = new AMQPMessage("$i $m");
@@ -19,6 +26,6 @@ for ($i = 0; $i < $end; $i++) {
 
     echo " [$i/$end] Sent '$m'\n";
 }
-
+*/
 $channel->close();
 $connection->close();
