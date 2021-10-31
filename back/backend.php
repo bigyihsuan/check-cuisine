@@ -23,7 +23,8 @@ $data_consume_channel = $data_consume_connection->channel();
 // $channel->queue_declare(BACK_DATA, false, true, false, false);
 
 $front_publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
-$data_publish_channel->queue_declare(BACK_DATA, false, true, false, false);
+//$data_publish_channel->queue_declare(BACK_DATA, false, true, false, false);
+$data_publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
 
 // $channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
 
@@ -34,7 +35,8 @@ $handle_messages_from_front = function (AMQPMessage $request) {
 
     $channel = $request->getChannel();
     // for sending queries to the database
-    $database_client = new Client($channel->getConnection(), BACK_DATA);
+    //$database_client = new Client($channel->getConnection(), BACK_DATA);
+    $database_client = new Client($channel->getConnection(), FRONT_BACK);
 
     list($prefix, $body) = explode(" ", $request->body, 2);
 
