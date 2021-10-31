@@ -18,7 +18,7 @@ for ($i = 0; $i < $end; $i++) {
     $msg = new AMQPMessage("$i $m");
     $channel->basic_publish($msg, '', 'FRONT_BACK');
 
-    echo " Sent '$m'\n";
+    echo "Sent '$m'\n";
 }
 
 $channel->close();
