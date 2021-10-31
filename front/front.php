@@ -69,7 +69,7 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-
+*/
 
 if (isset($argv[0])) {
     $msg = new AMQPMessage($argv[0]);
@@ -85,12 +85,12 @@ $callback = function (AMQPMessage $msg) {
     echo ' [x] Received ', $msg->body, "\n";
     $m = readline("Message: ");
     $msg = new AMQPMessage($m);
-    $publish_channel->basic_publish($msg, '', FRONT_BACK);
+    $publish_channel->basic_publish($msg, '', BACK_DATA);
     echo "Sent '$m'\n";
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-$consume_channel->basic_consume(FRONT_BACK, '', false, true, false, false, $callback);
+$consume_channel->basic_consume(BACK_DATA, '', false, true, false, false, $callback);
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
@@ -100,4 +100,3 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-*/
