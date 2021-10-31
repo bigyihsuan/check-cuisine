@@ -72,7 +72,7 @@ $consume_channel->close();
 */
 
 if (isset($argv[0])) {
-    $msg = new AMQPMessage($argv[1]);
+    $msg = new AMQPMessage($argv[0]);
     $publish_channel->basic_publish($msg, '', FRONT_BACK);
     echo "Sent '{$msg->getBody()}'\n";
 }
