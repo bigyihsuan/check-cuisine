@@ -69,7 +69,7 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-*/
+
 
 if (isset($argv[0])) {
     $msg = new AMQPMessage($argv[0]);
@@ -100,3 +100,4 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
+*/
