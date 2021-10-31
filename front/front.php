@@ -40,21 +40,9 @@ function run_query($prefix)
     return $backend_client->send_query($query, $prefix);
 }
 
-$end = 1;
-for ($i = 0; $i < $end; $i++) {
-    $m = readline("Message $i: ");
-    $msg = new AMQPMessage("$i $m");
-    $channel->basic_publish($msg, '', 'Messaging');
-
-    echo "Sent '$m'\n";
-}
-
-$channel->close();
-$connection->close();
-
 // $backend_client = new Client($connection, FRONT_BACK);
 // $body = $backend_client->send_query($body, "");
-/*
+
 $body = readline("Enter message content: ");
 print("[FRONT] sending message to BACK...\n");
 print("[FRONT] message = \"$body\"\n");
@@ -81,7 +69,6 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-*/
 /*
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
