@@ -42,7 +42,7 @@ function run_query($prefix)
 
 // $backend_client = new Client($connection, FRONT_BACK);
 // $body = $backend_client->send_query($body, "");
-
+/*
 $body = readline("Enter message content: ");
 print("[FRONT] sending message to BACK...\n");
 print("[FRONT] message = \"$body\"\n");
@@ -60,6 +60,36 @@ $handle_back_to_front = function (AMQPMessage $message) {
 };
 
 $consume_channel->basic_consume(FRONT_BACK, "", $handle_back_to_front);
+
+while ($consume_channel->is_open()) {
+    $consume_channel->wait();
+}
+
+$publish->close();
+$consume->close();
+$publish_channel->close();
+$consume_channel->close();
+*/
+if (isset($argv[1])) {
+    $msg = new AMQPMessage($argv[1]);
+    $publish_channel->basic_publish($msg, '', FRONT_BACK);
+    echo "Sent '{$msg->getBody()}'\n";
+}
+
+echo " [*] Waiting for messages. To exit press CTRL+C\n";
+
+$callback = function (AMQPMessage $msg) {
+    global $publish_channel;
+
+    echo ' [x] Received ', $msg->body, "\n";
+    $m = readline("Message: ");
+    $msg = new AMQPMessage($m);
+    $publish_channel->basic_publish($msg, '', FRONT_BACK);
+    echo "Sent '$m'\n";
+};
+
+// basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+$consume_channel->basic_consume(FRONT_BACK, '', false, true, false, false, $callback);
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
