@@ -11,29 +11,31 @@ $apple_no = "171515";
 $api_query = "?api_key=" . API_KEY_FDC;
 
 // $query = $food_get . $apple_no . $api_query /*. "&format=abridged"*/;
+$data = array();
+foreach (array_chunk($food_ids, 20, true) as $chunk) {
+    $ids = "";
+    foreach ($chunk as $id => $_) {
+        echo "$id\n";
+        $ids .= "&fdcIds=$id";
+    }
+    // $ids = substr($ids, 0, strlen($ids) - 1);
+    // $nut_ids = "";
+    // foreach ($nutrient_ids as $nut_id => $_) {
+    //     $nut_ids .= "&nutrients=$nut_id";
+    // }
 
+    $query = $foods_get . $api_query . $ids  /* . $nut_ids */;
 
-$ids = "";
-foreach ($food_ids as $id => $_) {
-    $ids .= "&fdcIds=$id";
+    echo $query . "\n";
+
+    echo "[get_data] getting data...\n";
+    $received = json_decode(file_get_contents($query), true);
+    $data = array_merge($data, $received);
+    echo "[get_data] received data\n";
+    echo "[get_data] sleeping 1 second\n";
+    sleep(1);
 }
-// $ids = substr($ids, 0, strlen($ids) - 1);
-// $nut_ids = "";
-// foreach ($nutrient_ids as $nut_id => $_) {
-//     $nut_ids .= "&nutrients=$nut_id";
-// }
-
-$query = $foods_get . $api_query . $ids  /* . $nut_ids */;
-
-echo $query . "\n";
-
-echo "[get_data] getting data...\n";
-$data = file_get_contents($query);
-echo "[get_data] received data\n";
-
-// file_put_contents("data.json", json_encode(json_decode($data, true), JSON_PRETTY_PRINT));
-
-$data = json_decode($data, true);
+// file_put_contents("data.json", json_encode($data, JSON_PRETTY_PRINT));
 
 // $calories_name = "Energy";
 // $fat_name = "Total lipid (fat)";
@@ -44,6 +46,7 @@ $data = json_decode($data, true);
 
 $foods = [];
 foreach ($data as $food) {
+    echo "{$food['fdcId']}\n";
     $food_nutrients = $food['foodNutrients'];
     // echo "{$food["fdcId"]} {$food_ids[$food["fdcId"]]}\n";
     $nuts = array();
@@ -68,7 +71,7 @@ foreach ($data as $food) {
 
 foreach ($foods as $food) {
     echo "\n{$food->name}\n";
-    foreach ($nuts as $nutrient) {
+    foreach ($food->nutrients as $nutrient) {
         echo "{$nutrient->name} {$nutrient->amount} {$nutrient->unit}\n";
     }
 }
