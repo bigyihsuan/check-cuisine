@@ -1,7 +1,8 @@
 <?php
 
 const front_server = "25.53.122.72"; // yasu
-const rabbit_server = "25.77.32.88"; // jeff
+//const rabbit_server = "25.77.32.88"; // jeff
+const rabbit_server = "25.52.177.120"; // jeff
 const back_server = "25.51.190.242"; // yi-hsuan
 const database_server = "25.53.49.9"; // jakub
 
