@@ -17,7 +17,7 @@ $consume_channel = $consume_connection->channel();
 
 $publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
 // $channel->queue_declare(BACK_FRONT, false, true, false, false);
-/*
+
 function run_query($prefix)
 {
     global $connection, $username, $password;
@@ -69,8 +69,8 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-*/
 
+/*
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
     $publish_channel->basic_publish($msg, '', FRONT_BACK);
@@ -100,3 +100,4 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
+*/
