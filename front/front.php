@@ -39,7 +39,7 @@ function run_query($prefix)
 
     return $backend_client->send_query($query, $prefix);
 }
-/*
+
 // $backend_client = new Client($connection, FRONT_BACK);
 // $body = $backend_client->send_query($body, "");
 
@@ -69,8 +69,8 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-*/
 
+/*
 if (isset($argv[0])) {
     $msg = new AMQPMessage($argv[0]);
     $publish_channel->basic_publish($msg, '', FRONT_BACK);
@@ -100,3 +100,4 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
+*/
