@@ -23,7 +23,7 @@ for ($i = 0; $i < $end; $i++) {
 */
 $end = 2;
 for ($i = 0; $i < $end; $i++) {
-    
+/*
     if ($i = 1) {
         $m = readline("Username: ");
         $msg1 = new AMQPMessage("$m");
@@ -36,6 +36,19 @@ for ($i = 0; $i < $end; $i++) {
   
     $channel->basic_publish($msg1, '', 'front-send');
      $channel->basic_publish($msg2, '', 'front-send');
+
+    echo "Sent login info to backend \n";
+    */
+    
+    if ($i = 1) {
+        $m = readline("Username: ");
+        $msg1 = new AMQPMessage("$m");
+        $channel->basic_publish($msg1, '', 'front-send');
+        
+        $m = readline("Password: ");
+        $msg2 = new AMQPMessage("$m");
+        $channel->basic_publish($msg2, '', 'front-send');
+    }
 
     echo "Sent login info to backend \n";
 }
