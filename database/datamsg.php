@@ -10,7 +10,7 @@ $publish = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], b
 $consume = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
 $publish_channel = $publish->channel();
 $consume_channel = $consume->channel();
-$consumeData_channel = $consume->channel();
+$consumeFront_channel = $consume->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare('back-data', false, true, false, false);
