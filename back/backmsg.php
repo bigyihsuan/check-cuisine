@@ -28,8 +28,8 @@ $callback = function (AMQPMessage $msg) {
     global $publish_channel;
 
     echo ' [x] Received ', $msg->body, "\n";
-    $m = readline("Message: ");
-    $msg = new AMQPMessage($m);
+    //$m = readline("Message: ");
+    //$msg = new AMQPMessage($m);
     //$publish_channel->basic_publish($msg, '', BACK_DATA);
     //$consume_channel->basic_publish($msg, '', BACK_DATA);
     //echo "Sent '$m'\n";
@@ -37,7 +37,7 @@ $callback = function (AMQPMessage $msg) {
     $channel->queue_declare('back-data', false, true, false, false);
     $channel->basic_publish($msg, '', 'back-data');
 
-    echo "Sent '$m'\n";
+    echo "Sent '$msg'\n";
 
 };
 
