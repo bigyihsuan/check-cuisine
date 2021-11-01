@@ -18,8 +18,8 @@ $consume_channel->queue_declare('back-data', false, true, false, false);
 $consumeData_channel->queue_declare('data-back', false, true, false, false);
 
 
-if (isset($argv[2])) {
-    $msg = new AMQPMessage($argv[2]);
+if (isset($argv[1])) {
+    $msg = new AMQPMessage($argv[1]);
     //$publish_channel->basic_publish($msg, '', FRONT_BACK);
     $consume_channel->basic_publish($msg, '', BACK_DATA);
     echo "Sent '{$msg->getBody()}'\n";
@@ -33,7 +33,6 @@ $callback = function (AMQPMessage $msg) {
     global $consumeData_channel;
     
     echo ' [x] Received ', $msg->body, "\n";
-    echo ' [x] Received ', $msg->body, "\n";
  
     //$m = readline("Message: ");
     //$msg = new AMQPMessage($m);
@@ -43,6 +42,8 @@ $callback = function (AMQPMessage $msg) {
     
     $consume_channel->basic_publish($msg, '', 'back-data');
     
+    $msg2 = new AMQPMessage($m);
+    echo ' [x] Received ', $msg2->body, "\n";
     
     $m3 = readline("Message: ");
     $msg3 = new AMQPMessage($m3);
