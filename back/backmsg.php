@@ -41,22 +41,28 @@ $callback = function (AMQPMessage $msg) {
     //echo "Sent '$m'\n";
     
     $consume_channel->basic_publish($msg, '', 'back-data');
-    
+ 
+    /*
     $end = 1;
     if ($end =1) {
-        $msg2 = new AMQPMessage($end);
+        $msg2 = new AMQPMessage($);
         $consume_channel->basic_publish($msg2, '', 'back-data');
         echo ' [x] Received ', $msg2->body, "\n";
     }
-        
+     
     $m3 = readline("Message: ");
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
-
+*/ 
     //echo "Sent '$msg'\n";
 
 };
+
+ $m3 = readline("Message: ");
+    $msg3 = new AMQPMessage($m3);
+    $consumeData_channel->basic_publish($msg3, '', 'data-back');
+    echo "Sent '$m3'\n";
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
