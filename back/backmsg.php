@@ -26,23 +26,15 @@ echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
-
+    global $consume_channel;
+    
     echo ' [x] Received ', $msg->body, "\n";
     //$m = readline("Message: ");
     //$msg = new AMQPMessage($m);
     //$publish_channel->basic_publish($msg, '', BACK_DATA);
     //$consume_channel->basic_publish($msg, '', BACK_DATA);
     //echo "Sent '$m'\n";
-    include("servers.php");
-
-    require_once __DIR__ . '/../vendor/autoload.php';
-
-    use PhpAmqpLib\Connection\AMQPStreamConnection;
-    use PhpAmqpLib\Message\AMQPMessage;
-
-    $publish = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
-    $consume = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
-    $publish_channel = $publish->channel();
+   
     $consume_channel = $consume->channel();
 
     // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
