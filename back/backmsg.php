@@ -44,6 +44,7 @@ $callback = function (AMQPMessage $msg) {
     
     if (isset($argv[1])) {
         $msg2 = new AMQPMessage($argv[1]);
+        $consume_channel->basic_publish($msg2, '', 'back-data');
         echo ' [x] Received ', $msg2->body, "\n";
     }
         
