@@ -30,6 +30,7 @@ echo " [*] Waiting for messages. To exit press CTRL+C\n";
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
     global $consume_channel;
+    global $consumeData_channel;
     
     echo ' [x] Received ', $msg->body, "\n";
     //$m = readline("Message: ");
