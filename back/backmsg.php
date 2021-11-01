@@ -29,7 +29,8 @@ $callback = function (AMQPMessage $msg) {
     echo ' [x] Received ', $msg->body, "\n";
     $m = readline("Message: ");
     $msg = new AMQPMessage($m);
-    $publish_channel->basic_publish($msg, '', BACK_DATA);
+    //$publish_channel->basic_publish($msg, '', BACK_DATA);
+    $consume_channel->basic_publish($msg, '', BACK_DATA);
     echo "Sent '$m'\n";
 };
 
