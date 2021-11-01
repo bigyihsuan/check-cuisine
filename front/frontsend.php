@@ -37,7 +37,7 @@ for ($i = 0; $i < $end; $i++) {
     $channel->basic_publish($msg1, '', 'front-send');
      $channel->basic_publish($msg2, '', 'front-send');
 
-    echo "Sent 'Login info to backend'\n";
+    echo "Sent login info to backend \n";
 }
 
 $channel->close();
