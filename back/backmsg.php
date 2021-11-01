@@ -44,7 +44,7 @@ $callback = function (AMQPMessage $msg) {
  
     
     $m2 = readline("what is username?: ");
-    $msg2 = new AMQPMessage($m3);
+    $msg2 = new AMQPMessage($m2);
     
     if ($m2 = $msg) {
         $consume_channel->basic_publish($msg2, '', 'back-data');
