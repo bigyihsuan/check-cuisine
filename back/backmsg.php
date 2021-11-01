@@ -14,6 +14,8 @@ $consume_channel = $consume->channel();
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare('front-send', false, true, false, false);
 $consume_channel->queue_declare('back-data', false, true, false, false);
+$consumeData_channel->queue_declare('data-back', false, true, false, false);
+
 
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
@@ -36,6 +38,11 @@ $callback = function (AMQPMessage $msg) {
     //echo "Sent '$m'\n";
     
     $consume_channel->basic_publish($msg, '', 'back-data');
+    
+    $m2 = readline("Message: ");
+    $msg2 = new AMQPMessage($m);
+    $consumeData_channel->basic_publish($msg2, '', 'data -back');
+    echo "Sent '$m2'\n";
 
     //echo "Sent '$msg'\n";
 
