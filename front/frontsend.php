@@ -26,12 +26,14 @@ for ($i = 0; $i < $end; $i++) {
     
     if ($i = 1) {
         $m = readline("Username: ");
+        $msg = new AMQPMessage("$m");
     }
     
     if ($i = 2) {
         $m = readline("Password: ");
+        $msg = new AMQPMessage("$m");
     }
-    $msg = new AMQPMessage("$i $m");
+    
     $channel->basic_publish($msg, '', 'front-send');
 
     echo "Sent '$m'\n";
