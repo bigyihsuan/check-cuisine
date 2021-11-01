@@ -33,8 +33,9 @@ for ($i = 0; $i < $end; $i++) {
         $m = readline("Password: ");
         $msg2 = new AMQPMessage("$m");
     }
-    
-    $channel->basic_publish($msg1, $msg2, '', 'front-send');
+  
+    $channel->basic_publish($msg1, '', 'front-send');
+     $channel->basic_publish($msg2, '', 'front-send');
 
     echo "Sent '$m'\n";
 }
