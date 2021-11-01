@@ -66,11 +66,11 @@ $m3 = readline("Message: ");
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
-
+/*
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
 }
-
+*/
 $publish->close();
 $consume->close();
 $publish_channel->close();
