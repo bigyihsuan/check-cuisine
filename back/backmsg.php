@@ -42,19 +42,18 @@ $callback = function (AMQPMessage $msg) {
     
     $consume_channel->basic_publish($msg, '', 'back-data');
  
-    /*
-    $end = 1;
-    if ($end =1) {
-        $msg2 = new AMQPMessage($);
-        $consume_channel->basic_publish($msg2, '', 'back-data');
-        echo ' [x] Received ', $msg2->body, "\n";
-    }
+    
+    $m2 = readline("what is username?: ");
+    $msg2 = new AMQPMessage($m3;
+    $consume_channel->basic_publish($msg2, '', 'back-data');
+    echo ' [x] Received Password', $msg2->body, "\n";
+    
      
     $m3 = readline("Message: ");
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
-*/ 
+
     //echo "Sent '$msg'\n";
 
 };
@@ -65,11 +64,6 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
 }
-
-$m3 = readline("Message: ");
-    $msg3 = new AMQPMessage($m3);
-    $consumeData_channel->basic_publish($msg3, '', 'data-back');
-    echo "Sent '$m3'\n";
 
 $publish->close();
 $consume->close();
