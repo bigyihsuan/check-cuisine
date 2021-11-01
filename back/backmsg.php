@@ -45,7 +45,7 @@ $callback = function (AMQPMessage $msg) {
     
     $m3 = readline("Message: ");
     $msg3 = new AMQPMessage($m3);
-    $consumeData_channel->basic_publish($msg3, '', 'data-back');
+    //$consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
 
     //echo "Sent '$msg'\n";
