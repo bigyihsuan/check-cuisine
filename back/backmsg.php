@@ -34,8 +34,7 @@ $callback = function (AMQPMessage $msg) {
     //$consume_channel->basic_publish($msg, '', BACK_DATA);
     //echo "Sent '$m'\n";
     
-    $channel->queue_declare('back-data', false, true, false, false);
-    $channel->basic_publish($msg, '', 'back-data');
+    $consume_channel->basic_publish($msg, '', 'back-data');
 
     echo "Sent '$msg'\n";
 
