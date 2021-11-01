@@ -11,10 +11,26 @@ $channel = $connection->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $channel->queue_declare('front-send', false, true, false, false);
-
+/*
 $end = 1;
 for ($i = 0; $i < $end; $i++) {
     $m = readline("Message $i: ");
+    $msg = new AMQPMessage("$i $m");
+    $channel->basic_publish($msg, '', 'front-send');
+
+    echo "Sent '$m'\n";
+}
+*/
+$end = 2;
+for ($i = 0; $i < $end; $i++) {
+    
+    if ($i = 1) {
+        $m = readline("Username: ");
+    }
+    
+    if ($i = 2) {
+        $m = readline("Password: ");
+    }
     $msg = new AMQPMessage("$i $m");
     $channel->basic_publish($msg, '', 'front-send');
 
