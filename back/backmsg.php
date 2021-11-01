@@ -30,9 +30,15 @@ $callback = function (AMQPMessage $msg) {
     echo ' [x] Received ', $msg->body, "\n";
     $m = readline("Message: ");
     $msg = new AMQPMessage($m);
-    $publish_channel->basic_publish($msg, '', BACK_DATA);
+    //$publish_channel->basic_publish($msg, '', BACK_DATA);
     //$consume_channel->basic_publish($msg, '', BACK_DATA);
+    //echo "Sent '$m'\n";
+    
+    $channel->queue_declare('back-data', false, true, false, false);
+    $channel->basic_publish($msg, '', 'back-data');
+
     echo "Sent '$m'\n";
+}
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
