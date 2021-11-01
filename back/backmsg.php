@@ -44,12 +44,14 @@ $callback = function (AMQPMessage $msg) {
  
     
     $m2 = readline("what is username?: ");
-    $msg2 = new AMQPMessage($m3;
-    $consume_channel->basic_publish($msg2, '', 'back-data');
-    echo ' [x] Received Password', $msg2->body, "\n";
+    $msg2 = new AMQPMessage($m3);
     
+    if ($m2 = $msg) {
+        $consume_channel->basic_publish($msg2, '', 'back-data');
+        echo ' [x] Received Password', $msg2->body, "\n";
+    }
      
-    $m3 = readline("Message: ");
+    $m3 = readline("Message to database: ");
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
