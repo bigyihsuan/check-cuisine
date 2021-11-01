@@ -13,6 +13,7 @@ $consume_channel = $consume->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
+$consume_channel->queue_declare(BACK_DATA, false, true, false, false);
 
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
