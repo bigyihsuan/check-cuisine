@@ -12,13 +12,13 @@ $api_query = "?api_key=" . API_KEY_FDC;
 
 // $query = $food_get . $apple_no . $api_query /*. "&format=abridged"*/;
 $data = array();
-foreach (array_chunk($food_ids, 20, true) as $chunk) {
+foreach (array_chunk($food_ids, count($food_ids) / 5, true) as $chunk) {
     $ids = "";
     foreach ($chunk as $id => $_) {
         echo "$id\n";
         $ids .= "&fdcIds=$id";
     }
-    // $ids = substr($ids, 0, strlen($ids) - 1);
+    $ids = substr($ids, 0, strlen($ids) - 1);
     // $nut_ids = "";
     // foreach ($nutrient_ids as $nut_id => $_) {
     //     $nut_ids .= "&nutrients=$nut_id";
@@ -29,7 +29,7 @@ foreach (array_chunk($food_ids, 20, true) as $chunk) {
     echo $query . "\n";
 
     echo "[get_data] getting data...\n";
-    $received = json_decode(file_get_contents($query), true);
+    ($received = json_decode(file_get_contents($query), true)) or die("Failed to get data\n");
     $data = array_merge($data, $received);
     echo "[get_data] received data\n";
     echo "[get_data] sleeping 1 second\n";
@@ -69,12 +69,14 @@ foreach ($data as $food) {
     $foods[] = new Food($food_ids[$food["fdcId"]], $nuts);
 }
 
-foreach ($foods as $food) {
-    echo "\n{$food->name}\n";
-    foreach ($food->nutrients as $nutrient) {
-        echo "{$nutrient->name} {$nutrient->amount} {$nutrient->unit}\n";
-    }
-}
+// foreach ($foods as $food) {
+//     echo "\n{$food->name}\n";
+//     foreach ($food->nutrients as $nutrient) {
+//         echo "{$nutrient->name} {$nutrient->amount} {$nutrient->unit}\n";
+//     }
+// }
+
+echo json_encode($foods, JSON_PRETTY_PRINT) . "\n";
 
 // json structure:
 /* 
