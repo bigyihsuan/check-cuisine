@@ -8,7 +8,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
 $channel = $connection->channel();
 
-$channel->queue_declare('front-back', false, false, false, false);
+$channel->queue_declare('front-data', false, false, false, false);
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
@@ -18,7 +18,7 @@ $callback = function ($msg) {
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-$channel->basic_consume('front-back', '', false, true, false, false, $callback);
+$channel->basic_consume('front-data', '', false, true, false, false, $callback);
 
 while ($channel->is_open()) {
     $channel->wait();
