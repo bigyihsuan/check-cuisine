@@ -8,7 +8,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
 $channel = $connection->channel();
 
-$channel->queue_declare('data-front', false, false, false, false);
+$channel->queue_declare('data-front', false, true, false, false);
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
