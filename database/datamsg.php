@@ -11,11 +11,13 @@ $consume = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], b
 $publish_channel = $publish->channel();
 $consume_channel = $consume->channel();
 $consumeFront_channel = $consume->channel();
+$publishFront_channel = $publish->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare('back-data', false, true, false, false);
 $consume_channel->queue_declare('data-back', false, true, false, false);
 $consumeFront_channel->queue_declare('data-front', false, true, false, false);
+$publishFront_channel->queue_declare('data-front', false, true, false, false);
 
 
 if (isset($argv[1])) {
@@ -39,7 +41,7 @@ $callback = function (AMQPMessage $msg) {
     
     $m2 = readline("Message: ");
     $msg2 = new AMQPMessage($m2);
-    $consumeFront_channel->basic_publish($msg2, '', 'data-front');
+    $publish_channel->basic_publish($msg2, '', 'back-data');
     echo "Sent '$m2'\n";
 
     //echo "Sent '$msg'\n";
