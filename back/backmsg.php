@@ -11,11 +11,15 @@ $consume = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], b
 $publish_channel = $publish->channel();
 $consume_channel = $consume->channel();
 $consumeData_channel = $consume->channel();
+$publishReturn_channel = $publish->channel();
+$consumeReturn_channel = $consume->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare('front-send', false, true, false, false);
 $consume_channel->queue_declare('back-data', false, true, false, false);
 $consumeData_channel->queue_declare('data-back', false, true, false, false);
+$publishReturn_channel->queue_declare('front-recieve', false, true, false, false);
+$consumeReturn_channel->queue_declare('data-return-back', false, true, false, false);
 
 
 if (isset($argv[1])) {
@@ -57,6 +61,33 @@ $callback = function (AMQPMessage $msg) {
     echo "Sent '$m3'\n";
 
     //echo "Sent '$msg'\n";
+    
+        echo " [*] Waiting for messages. To exit press CTRL+C\n";
+
+        $callback = function (AMQPMessage $msg) {
+        global $publish_channel;
+        global $consume_channel;
+        global $consumeReturn_channel;
+         global $publishReturn_channel;
+
+        echo ' [x] Received ', $msg->body, "\n";
+
+
+
+        $consumeReturn_channel->basic_publish($msg, '', 'back-return-front');
+
+
+        $m3 = readline("Message to front: ");
+        $msg3 = new AMQPMessage($m3);
+        $publishReturn_channel->basic_publish($msg3, '', 'front-receive');
+        echo "Sent '$m3'\n";
+
+        //echo "Sent '$msg'\n";
+
+    };
+
+    // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+    $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback);
 
 };
 
