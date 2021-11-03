@@ -38,6 +38,12 @@ $callback = function (AMQPMessage $msg) {
     global $consumeReturn_channel;
     global $publishReturn_channel;
     
+ $callback2 = function (AMQPMessage $msg4) {
+    global $publish_channel;
+    global $consume_channel;
+    global $consumeReturn_channel;
+    global $publishReturn_channel;
+
     echo ' [x] Received ', $msg->body, "\n";
  
     //$m = readline("Message: ");
@@ -66,22 +72,16 @@ $callback = function (AMQPMessage $msg) {
     
     echo " [*] Waiting to receive data. To exit press CTRL+C\n";
     
-        $callback2 = function (AMQPMessage $msg) {
-        global $publish_channel;
-        global $consume_channel;
-        global $consumeReturn_channel;
-        global $publishReturn_channel;
-
-        echo ' [x] Received ', $msg->body, "\n";
+        echo ' [x] Received ', $msg4->body, "\n";
 
 
 
-        $consumeReturn_channel->basic_publish($msg, '', 'back-return-front');
+        $consumeReturn_channel->basic_publish($msg4, '', 'back-return-front');
 
 
-        $m3 = readline("Message to front: ");
-        $msg3 = new AMQPMessage($m3);
-        $publishReturn_channel->basic_publish($msg3, '', 'front-receive');
+        $m4 = readline("Message to front: ");
+        $msg4 = new AMQPMessage($m4);
+        $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
         echo "Sent '$m3'\n";
 
         //echo "Sent '$msg'\n";
