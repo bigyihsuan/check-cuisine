@@ -1,4 +1,5 @@
 <?php
+/*
 include("servers.php");
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -61,3 +62,4 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
+*/
