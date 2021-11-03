@@ -16,7 +16,7 @@ $consumeReturn_channel = $consume->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare('front-send', false, true, false, false);
-$publishReturn_channel->queue_declare('front-recieve', false, true, false, false);
+$publishReturn_channel->queue_declare('front-receive', false, true, false, false);
 $consumeReturn_channel->queue_declare('data-return-back', false, true, false, false);
 
 
