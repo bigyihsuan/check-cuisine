@@ -29,7 +29,7 @@ if (isset($argv[1])) {
     echo "Sent '{$msg->getBody()}'\n";
 }
 
-echo " [*] Waiting to return messages. To exit press CTRL+C\n";
+echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
@@ -64,7 +64,7 @@ $callback = function (AMQPMessage $msg) {
 
     //echo "Sent '$msg'\n";
     
-        echo " [*] Waiting for messages. To exit press CTRL+C\n";
+        echo " [*] Waiting to return data. To exit press CTRL+C\n";
 
         $callback2 = function (AMQPMessage $msg) {
         global $publish_channel;
