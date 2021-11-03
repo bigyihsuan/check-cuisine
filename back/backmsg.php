@@ -10,14 +10,14 @@ $publish = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], b
 $consume = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
 $publish_channel = $publish->channel();
 $consume_channel = $consume->channel();
-//$consumeData_channel = $consume->channel();
+$consumeData_channel = $consume->channel();
 $publishReturn_channel = $publish->channel();
 $consumeReturn_channel = $consume->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare('front-send', false, true, false, false);
 $consume_channel->queue_declare('back-data', false, true, false, false);
-//$consumeData_channel->queue_declare('data-back', false, true, false, false);
+$consumeData_channel->queue_declare('data-back', false, true, false, false);
 $publishReturn_channel->queue_declare('front-recieve', false, true, false, false);
 $consumeReturn_channel->queue_declare('data-return-back', false, true, false, false);
 
@@ -34,7 +34,7 @@ echo " [*] Waiting for messages. To exit press CTRL+C\n";
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
     global $consume_channel;
-    //global $consumeData_channel;
+    global $consumeData_channel;
     global $consumeReturn_channel;
     global $publishReturn_channel;
     
