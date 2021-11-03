@@ -35,6 +35,8 @@ $callback = function (AMQPMessage $msg) {
     global $publish_channel;
     global $consume_channel;
     global $consumeData_channel;
+    global $consumeReturn_channel;
+    global $publishReturn_channel;
     
     echo ' [x] Received ', $msg->body, "\n";
  
@@ -64,11 +66,11 @@ $callback = function (AMQPMessage $msg) {
     
         echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
-        $callback = function (AMQPMessage $msg) {
+        $callback2 = function (AMQPMessage $msg) {
         global $publish_channel;
         global $consume_channel;
         global $consumeReturn_channel;
-         global $publishReturn_channel;
+        global $publishReturn_channel;
 
         echo ' [x] Received ', $msg->body, "\n";
 
@@ -87,7 +89,7 @@ $callback = function (AMQPMessage $msg) {
     };
 
     // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-    $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback);
+    $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
 
 };
 
