@@ -37,7 +37,7 @@ $callback2 = function (AMQPMessage $msg2) {
     global $consume_channel;
     echo ' [x] Received ', $msg2->body, "\n";
     
-}
+};
 
 $consume_channel->basic_consume('front-send', '', false, true, false, false, $callback2);
 
