@@ -80,6 +80,11 @@ $callback = function (AMQPMessage $msg) {
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
 
+ $m3 = readline("Message to database: ");
+    $msg3 = new AMQPMessage($m3);
+    $consumeData_channel->basic_publish($msg3, '', 'data-back');
+    echo "Sent '$m3'\n";
+
 /*
 echo " [*] Waiting to receive data. To exit press CTRL+C\n";
     
