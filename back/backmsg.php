@@ -39,10 +39,14 @@ $callback = function (AMQPMessage $msg) {
     global $consumeReturn_channel;
     global $publishReturn_channel;
     
-$callback = function (AMQPMessage $msg2) {
-
     echo ' [x] Received ', $msg->body, "\n";
-    echo ' [x] Received ', $msg2->body, "\n";
+    
+    $callback = function (AMQPMessage $msg2) {
+
+        echo ' [x] Received ', $msg2->body, "\n";
+        
+        $consume_channel->basic_publish($msg2, '', 'back-data');
+    };
  
     //$m = readline("Message: ");
     //$msg = new AMQPMessage($m);
