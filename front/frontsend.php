@@ -51,9 +51,9 @@ for ($i = 0; $i < $end; $i++) {
         
         $channel->queue_declare('front-receive', false, true, false, false);
         
-    echo "Sent login info to backend \n";
+    echo "Sent login info to backend \n\n";
 
-    echo " [*] Waiting for messages. To exit press CTRL+C\n";
+    echo " [*] Receiving data. To exit press CTRL+C\n";
 
     $callback = function ($msg) {
         echo ' [x] Received ', $msg->body, "\n";
