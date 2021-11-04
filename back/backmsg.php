@@ -34,7 +34,7 @@ if (isset($argv[1])) {
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback2 = function (AMQPMessage $msg2) {
-    
+    global $consume_channel;
     echo ' [x] Received ', $msg2->body, "\n";
     
 }
