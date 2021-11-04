@@ -49,6 +49,8 @@ for ($i = 0; $i < $end; $i++) {
         $msg2 = new AMQPMessage("$m");
         $channel->basic_publish($msg2, '', 'front-send');
         */
+        
+        include ("frontreceieve.php");
     }
 
     echo "Sent login info to backend \n";
