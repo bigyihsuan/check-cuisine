@@ -1,5 +1,6 @@
 <?php
 include("servers.php");
+include_once "rabbit_endpoints.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -40,13 +41,6 @@ $callback = function (AMQPMessage $msg) {
     global $publishReturn_channel;
     
     echo ' [x] Received ', $msg->body, "\n";
-    
-    $callback = function (AMQPMessage $msg2) {
-
-        echo ' [x] Received ', $msg2->body, "\n";
-        
-        $consume_channel->basic_publish($msg2, '', 'back-data');
-    };
  
     //$m = readline("Message: ");
     //$msg = new AMQPMessage($m);
@@ -76,7 +70,7 @@ $callback = function (AMQPMessage $msg) {
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-$consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
+$consume_channel->basic_consume('front-send', '', false, true, false, true, $callback);
 
 /*
 echo " [*] Waiting to receive data. To exit press CTRL+C\n";
