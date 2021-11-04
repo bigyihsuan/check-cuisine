@@ -81,13 +81,7 @@ $callback = function (AMQPMessage $msg) {
     
     //echo "Sent '$msg'\n";
     
-};
-
-// basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-$consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
-
-
-echo " [*] Waiting to receive data. To exit press CTRL+C\n";
+    echo " [*] Waiting to receive data. To exit press CTRL+C\n";
     
      $callback2 = function (AMQPMessage $msg4) {
     global $publish_channel;
@@ -113,6 +107,13 @@ echo " [*] Waiting to receive data. To exit press CTRL+C\n";
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
+
+
+    
+};
+
+// basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+$consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
 
 
 while ($consume_channel->is_open()) {
