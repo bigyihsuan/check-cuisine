@@ -33,6 +33,14 @@ if (isset($argv[1])) {
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
+$callback2 = function (AMQPMessage $msg2) {
+    
+    echo ' [x] Received ', $msg2->body, "\n";
+    
+}
+
+$consume_channel->basic_consume('front-send', '', false, true, false, false, $callback2);
+
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
     global $consume_channel;
