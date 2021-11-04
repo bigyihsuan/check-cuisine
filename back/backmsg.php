@@ -31,8 +31,9 @@ if (isset($argv[1])) {
     echo "Sent '{$msg->getBody()}'\n";
 }
 
-echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
+echo " [*] Waiting for messages. To exit press CTRL+C\n";
+/*
 $callback2 = function (AMQPMessage $msg2) {
     global $consume_channel;
     echo ' [x] Received ', $msg2->body, "\n";
@@ -45,7 +46,7 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
-
+*/
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
     global $consume_channel;
@@ -72,7 +73,7 @@ $callback = function (AMQPMessage $msg) {
         echo ' [x] Received Password: ', $msg2->body, "\n";
     }
     */ 
-    /*
+   
     $m3 = readline("Message to database: ");
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
@@ -84,7 +85,7 @@ $callback = function (AMQPMessage $msg) {
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
-*/
+
 
 echo " [*] Waiting to receive data. To exit press CTRL+C\n";
     
