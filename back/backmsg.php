@@ -64,37 +64,38 @@ $callback = function (AMQPMessage $msg) {
 
     //echo "Sent '$msg'\n";
     
-    echo " [*] Waiting to receive data. To exit press CTRL+C\n";
-    
-         $callback2 = function (AMQPMessage $msg4) {
-        global $publish_channel;
-        global $consume_channel;
-        global $consumeReturn_channel;
-        global $publishReturn_channel;
-    
-        echo ' [x] Received ', $msg4->body, "\n";
-
-
-
-        $consumeReturn_channel->basic_publish($msg4, '', 'back-return-front');
-
-
-        $m4 = readline("Message to front: ");
-        $msg4 = new AMQPMessage($m4);
-        $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
-        echo "Sent '$m3'\n";
-
-        //echo "Sent '$msg'\n";
-
-        };
-
-    // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-    $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
-
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
+
+echo " [*] Waiting to receive data. To exit press CTRL+C\n";
+    
+     $callback2 = function (AMQPMessage $msg4) {
+    global $publish_channel;
+    global $consume_channel;
+    global $consumeReturn_channel;
+    global $publishReturn_channel;
+
+    echo ' [x] Received ', $msg4->body, "\n";
+
+
+
+    $consumeReturn_channel->basic_publish($msg4, '', 'back-return-front');
+
+
+    $m4 = readline("Message to front: ");
+    $msg4 = new AMQPMessage($m4);
+    $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
+    echo "Sent '$m3'\n";
+
+    //echo "Sent '$msg'\n";
+
+    };
+
+// basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+$consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
+
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
