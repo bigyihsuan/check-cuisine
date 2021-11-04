@@ -22,8 +22,8 @@ $data_consume_channel = $data_consume_connection->channel();
 // $channel->queue_declare(BACK_FRONT, false, true, false, false);
 // $channel->queue_declare(BACK_DATA, false, true, false, false);
 
-$front_publish_channel->queue_declare(front-send, false, true, false, false);
-$data_publish_channel->queue_declare(back-data, false, true, false, false);
+$front_publish_channel->queue_declare('front-send', false, true, false, false);
+$data_publish_channel->queue_declare('back-data', false, true, false, false);
 //$data_publish_channel->queue_declare(FRONT_BACK, false, true, false, false);
 
 // $channel->basic_consume(FRONT_BACK, '', false, true, false, false, $handle_messages_from_front);
@@ -115,7 +115,7 @@ $test_handle_front = function (AMQPMessage $msg) {
         $body .= "\nBACK sent";
 
         $response = new AMQPMessage($body);
-        $front_publish_channel->basic_publish($response, "", front-send);
+        $front_publish_channel->basic_publish($response, "", 'front-send');
 
         print("[BACK] sent to FRONT\n");
     };
@@ -126,7 +126,7 @@ $test_handle_front = function (AMQPMessage $msg) {
     $body .= "\nBACK sent";
 
     $response = new AMQPMessage($body);
-    $front_publish_channel->basic_publish($response, "", front-send);
+    $front_publish_channel->basic_publish($response, "", 'front-send');
 
     print("[BACK] sent to FRONT\n");
 
@@ -141,7 +141,7 @@ $test_handle_front = function (AMQPMessage $msg) {
 };
 
 // for sending responses back to the frontend
-$front_consume_channel->basic_consume(front-send, "", $test_handle_front);
+$front_consume_channel->basic_consume('front-send', "", $test_handle_front);
 
 while ($front_consume_channel->is_open()) {
     $front_consume_channel->wait();
