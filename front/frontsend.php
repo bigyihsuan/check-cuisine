@@ -49,10 +49,26 @@ for ($i = 0; $i < $end; $i++) {
         $msg2 = new AMQPMessage("$m");
         $channel->basic_publish($msg2, '', 'front-send');
         
-        include ("frontreceive.php");
+        $channel->queue_declare('front-receive', false, true, false, false);
+        
+    echo "Sent login info to backend \n";
+
+    echo " [*] Waiting for messages. To exit press CTRL+C\n";
+
+    $callback = function ($msg) {
+        echo ' [x] Received ', $msg->body, "\n";
+
+    };
+
+    // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+    $channel->basic_consume('front-receive', '', false, true, false, false, $callback);
+
+    while ($channel->is_open()) {
+        $channel->wait();
+}
     }
 
-    echo "Sent login info to backend \n";
+    //echo "Sent login info to backend \n";
 }
 
 $channel->close();
