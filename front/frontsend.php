@@ -44,13 +44,12 @@ for ($i = 0; $i < $end; $i++) {
         $m = readline("Username: ");
         $msg1 = new AMQPMessage("$m");
         $channel->basic_publish($msg1, '', 'front-send');
-     /*   
+        
         $m = readline("Password: ");
         $msg2 = new AMQPMessage("$m");
         $channel->basic_publish($msg2, '', 'front-send');
-        */
         
-        include ("frontreceieve.php");
+        include ("frontreceive.php");
     }
 
     echo "Sent login info to backend \n";
