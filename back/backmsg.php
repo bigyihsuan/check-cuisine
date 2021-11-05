@@ -113,6 +113,7 @@ $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+$consume_channel->basic_qos(null, 2, null);
 $consume_channel->basic_consume('front-send', '', false, true, false, false, $callback);
 
 
