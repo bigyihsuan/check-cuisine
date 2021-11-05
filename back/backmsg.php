@@ -48,7 +48,7 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
 */
-$callback = function (AMQPMessage $msg, 'priority' => 2) {
+$callback = function (AMQPMessage $msg) {
     global $publish_channel;
     global $consume_channel;
     global $consumeData_channel;
