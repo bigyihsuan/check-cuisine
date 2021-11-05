@@ -63,6 +63,7 @@ $callback = function (AMQPMessage $msg) {
     //echo "Sent '$m'\n";
     
     $consume_channel->basic_publish($msg, '', 'back-data');
+    $msg->setPriority(2);
  
     /*
     $m2 = readline("what is username?: ");
