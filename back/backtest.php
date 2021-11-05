@@ -115,7 +115,8 @@ $test_handle_front = function (AMQPMessage $msg) {
         $body .= "\nBACK sent";
 
         $response = new AMQPMessage($body);
-        $front_publish_channel->basic_publish($response, "", 'front-send');
+        //$front_publish_channel->basic_publish($response, "", 'front-send');
+        $data_publish_channel->basic_publish($response, "", 'back-data');
 
         print("[BACK] sent to FRONT\n");
     };
@@ -126,7 +127,8 @@ $test_handle_front = function (AMQPMessage $msg) {
     $body .= "\nBACK sent";
 
     $response = new AMQPMessage($body);
-    $front_publish_channel->basic_publish($response, "", 'front-send');
+    //$front_publish_channel->basic_publish($response, "", 'front-send');
+    $data_publish_channel->basic_publish($response, "", 'back-data');
 
     print("[BACK] sent to FRONT\n");
 
