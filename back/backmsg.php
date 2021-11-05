@@ -25,6 +25,7 @@ $consumeReturn_channel->queue_declare('data-return-back', false, true, false, fa
 
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
+    $msg->setPriority(2);
     $msg2 = new AMQPMessage($argv[1]);
     //$publish_channel->basic_publish($msg, '', FRONT_BACK);
     $consume_channel->basic_publish($msg, '', BACK_DATA);
@@ -63,7 +64,6 @@ $callback = function (AMQPMessage $msg) {
     //echo "Sent '$m'\n";
     
     $consume_channel->basic_publish($msg, '', 'back-data');
-    $msg->setPriority(2);
  
     /*
     $m2 = readline("what is username?: ");
