@@ -22,7 +22,7 @@ $consumeData_channel->queue_declare('data-back', false, true, false, false);
 $publishReturn_channel->queue_declare('front-recieve', false, true, false, false);
 $consumeReturn_channel->queue_declare('data-return-back', false, true, false, false);
 
-
+/*
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
     $msg->setPriority(2);
@@ -31,7 +31,7 @@ if (isset($argv[1])) {
     $consume_channel->basic_publish($msg, '', BACK_DATA);
     echo "Sent '{$msg->getBody()}'\n";
 }
-
+*/
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 /*
@@ -82,6 +82,7 @@ $callback = function (AMQPMessage $msg) {
     
     //echo "Sent '$msg'\n";
     
+    /////RECIEVEING MSGS FROM DATA//////
     echo " [*] Waiting to receive data. To exit press CTRL+C\n";
     
      $callback2 = function (AMQPMessage $msg4) {
@@ -92,25 +93,17 @@ $callback = function (AMQPMessage $msg) {
 
     echo ' [x] Received ', $msg4->body, "\n";
 
-
-
     $consumeReturn_channel->basic_publish($msg4, '', 'back-return-front');
-
 
     $m4 = readline("Message to front: ");
     $msg4 = new AMQPMessage($m4);
     $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
     echo "Sent '$m3'\n";
 
-    //echo "Sent '$msg'\n";
-
     };
 
-// basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-$consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
-
-
-    
+    $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
+    /////-----------------------//////
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
