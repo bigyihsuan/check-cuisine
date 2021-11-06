@@ -61,7 +61,7 @@ $callback = function (AMQPMessage $msg) {
  
     
     //$consume_channel->basic_publish($msg, '', 'back-data');
-    $consume_channel->basic_publish($msg, 'back-data');
+    $consume_channel->basic_publish($msg, 'test', 'back-data');
  
    
     $m3 = readline("Message to database: ");
