@@ -57,30 +57,15 @@ $callback = function (AMQPMessage $msg) {
     
     echo ' [x] Received ', $msg->body, "\n";
  
-    //$m = readline("Message: ");
-    //$msg = new AMQPMessage($m);
-    //$publish_channel->basic_publish($msg, '', BACK_DATA);
-    //$consume_channel->basic_publish($msg, '', BACK_DATA);
-    //echo "Sent '$m'\n";
     
     $consume_channel->basic_publish($msg, '', 'back-data');
  
-    /*
-    $m2 = readline("what is username?: ");
-    $msg2 = new AMQPMessage($m2);
-    
-    if ($m2 = $msg) {
-        $consume_channel->basic_publish($msg2, '', 'back-data');
-        echo ' [x] Received Password: ', $msg2->body, "\n";
-    }
-    */ 
    
     $m3 = readline("Message to database: ");
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
     
-    //echo "Sent '$msg'\n";
     
     /////RECIEVEING MSGS FROM DATA//////
     echo " [*] Waiting to receive data. To exit press CTRL+C\n";
@@ -92,8 +77,10 @@ $callback = function (AMQPMessage $msg) {
     global $publishReturn_channel;
 
     echo ' [x] Received ', $msg4->body, "\n";
+         
 
     $consumeReturn_channel->basic_publish($msg4, '', 'back-return-front');
+         
 
     $m4 = readline("Message to front: ");
     $msg4 = new AMQPMessage($m4);
