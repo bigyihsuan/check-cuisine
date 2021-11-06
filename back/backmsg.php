@@ -17,8 +17,10 @@ $consumeReturn_channel = $consume->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $publish_channel->queue_declare('front-send', false, true, false, false);
-$consume_channel->queue_declare('back-data', false, true, false, false);
+$consume_channel->queue_declare('back-data', 'direct', true, false, false);
+//$consume_channel->queue_declare('back-data', false, true, false, false);
 $consumeData_channel->queue_declare('data-back', 'direct', true, false, false);
+//$consumeData_channel->queue_declare('data-back', false, true, false, false);
 $publishReturn_channel->queue_declare('front-recieve', false, true, false, false);
 $consumeReturn_channel->queue_declare('data-return-back', false, true, false, false);
 
@@ -58,7 +60,8 @@ $callback = function (AMQPMessage $msg) {
     echo ' [x] Received ', $msg->body, "\n";
  
     
-    $consume_channel->basic_publish($msg, '', 'back-data');
+    //$consume_channel->basic_publish($msg, '', 'back-data');
+    $consume_channel->basic_publish($msg, 'back-data');
  
    
     $m3 = readline("Message to database: ");
