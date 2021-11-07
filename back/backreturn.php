@@ -33,15 +33,15 @@ $callback = function (AMQPMessage $msg) {
     global $publish_channel;
     global $consume_channel;
     global $consumeReturn_channel;
-     global $publishReturn_channel;
-    
+    global $publishReturn_channel;
+
     echo ' [x] Received ', $msg->body, "\n";
- 
-  
-    
+
+
+
     $consumeReturn_channel->basic_publish($msg, '', 'back-return-front');
- 
- 
+
+
     $m3 = readline("Message to front: ");
     $msg3 = new AMQPMessage($m3);
     $publishReturn_channel->basic_publish($msg3, '', 'front-receive');
@@ -62,4 +62,3 @@ $publish->close();
 $consume->close();
 $publish_channel->close();
 $consume_channel->close();
-
