@@ -19,13 +19,14 @@ $consume_channel->queue_declare('data-back', false, true, false, false);
 $consumeFront_channel->queue_declare('data-return-back', false, true, false, false);
 $publishFront_channel->queue_declare('data-return-back', false, true, false, false);
 
-
+/*
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
     //$publish_channel->basic_publish($msg, '', FRONT_BACK);
     $consume_channel->basic_publish($msg, '', BACK_DATA);
     echo "Sent '{$msg->getBody()}'\n";
 }
+*/
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 

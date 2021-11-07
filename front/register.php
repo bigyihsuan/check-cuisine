@@ -43,7 +43,7 @@ function checkPasswords(form) {
 
     // passwords match, send to the backend
     $_POST['password'] = password_hash($password . $username, null);
-    include "./front.php";
+    include "./frontsend.php";
     $result = run_query(Prefix::REGISTER);
     list(, $is_success) = explode(" ", $result, 2);
     $is_success = $result === "true" ? true : false;

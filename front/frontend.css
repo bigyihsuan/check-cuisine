@@ -5,3 +5,7 @@ div.center {
 div.right {
     text-align: right;
 }
+
+#SearchBar{
+    text-align: center;
+}
