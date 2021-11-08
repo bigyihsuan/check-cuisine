@@ -6,8 +6,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 // check passwords
 // get info from post
-$username = $_POST['username'];
-$password = $_POST['password'];
+//$username = $_POST['username'];
+//$password = $_POST['password'];
 
 //////////////////////////////////////////////////
 //require_once __DIR__ . '/../vendor/autoload.php';
@@ -25,8 +25,11 @@ $end = 2;
 for ($i = 0; $i < $end; $i++) {
 
     if ($i = 1) {
-        $username = readline("Username: ");
-        $password = readline("Password: ");
+        //$username = readline("Username: ");
+        //$password = readline("Password: ");
+        
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
         $userpass = array($username => $password);
         $userpass_json = json_encode($userpass);
