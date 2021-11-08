@@ -41,13 +41,13 @@ for ($i = 0; $i < $end; $i++) {
 
     echo "Sent login info to backend \n";
     */
-
+    $data = $_POST;
     if ($i = 1) {
         //$username = readline("Username: ");
         //$password = readline("Password: ");
         
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = $data['username'];
+        $password = $data['password'];
 
         $userpass = array($username => $password);
         $userpass_json = json_encode($userpass);
