@@ -43,8 +43,11 @@ for ($i = 0; $i < $end; $i++) {
     */
 
     if ($i = 1) {
-        $username = readline("Username: ");
-        $password = readline("Password: ");
+        //$username = readline("Username: ");
+        //$password = readline("Password: ");
+        
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
         $userpass = array($username => $password);
         $userpass_json = json_encode($userpass);
