@@ -1,5 +1,5 @@
 <?php
-include("servers.php");
+include("../servers.php");
 include_once "rabbit_endpoints.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -7,7 +7,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$connection = new AMQPStreamConnection(rabbit_server, 5672, back_server_creds[0], back_server_creds[1]);
+$connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
 $channel = $connection->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
@@ -46,14 +46,12 @@ for ($i = 0; $i < $end; $i++) {
 */
 $end = 2;
 for ($i = 0; $i < $end; $i++) {
-    
-    $data = $_POST;
     if ($i == 1) {
         //$username = readline("Username: ");
         //$password = readline("Password: ");
-        
-        $username = $data['username'];
-        $password = $data['password'];
+
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
         $userpass = array($username => $password);
         $userpass_json = json_encode($userpass);
