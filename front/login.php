@@ -2,13 +2,15 @@
 include_once "servers.php";
 include_once "frontsend.php";
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 // check passwords
 // get info from post
 $username = $_POST['username'];
 $password = $_POST['password'];
 
 //////////////////////////////////////////////////
-require_once __DIR__ . '/../vendor/autoload.php';
+//require_once __DIR__ . '/../vendor/autoload.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
