@@ -1,7 +1,6 @@
 <?php
 include("servers.php");
 include_once "rabbit_endpoints.php";
-include_once "login.html";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -25,22 +24,7 @@ for ($i = 0; $i < $end; $i++) {
 */
 $end = 2;
 for ($i = 0; $i < $end; $i++) {
-    /*
-    if ($i = 1) {
-        $m = readline("Username: ");
-        $msg1 = new AMQPMessage("$m");
-    }
     
-    if ($i = 2) {
-        $m = readline("Password: ");
-        $msg2 = new AMQPMessage("$m");
-    }
-  
-    $channel->basic_publish($msg1, '', 'front-send');
-     $channel->basic_publish($msg2, '', 'front-send');
-
-    echo "Sent login info to backend \n";
-    */
     $data = $_POST;
     if ($i = 1) {
         //$username = readline("Username: ");
