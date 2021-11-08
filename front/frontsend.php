@@ -48,7 +48,7 @@ $end = 2;
 for ($i = 0; $i < $end; $i++) {
     
     $data = $_POST;
-    if ($i = 1) {
+    if ($i == 1) {
         //$username = readline("Username: ");
         //$password = readline("Password: ");
         
