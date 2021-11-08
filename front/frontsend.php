@@ -12,6 +12,28 @@ $channel = $connection->channel();
 
 // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
 $channel->queue_declare('front-send', false, true, false, false);
+
+function run_query($prefix)
+{
+    global $connection, $username, $password;
+    $backend_client = new Client($connection, 'front-send');
+    // create "query"
+    switch ($prefix) {
+        case Prefix::REGISTER: {
+                $query = "$prefix $username $password";
+                break;
+            }
+        case Prefix::LOGIN: {
+                $query = "$prefix $username $password";
+                break;
+            }
+        default: {
+                break;
+            }
+    }
+
+    return $backend_client->send_query($query, $prefix);
+}
 /*
 $end = 1;
 for ($i = 0; $i < $end; $i++) {
