@@ -1,7 +1,7 @@
 <?php
 include("servers.php");
 include_once "rabbit_endpoints.php";
-include_once "login.php";
+include "login.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
