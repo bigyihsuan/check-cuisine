@@ -69,7 +69,9 @@ $callback = function (AMQPMessage $msg) {
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
 
-
+    include_once "backreturn.php";
+    
+    /*
     ///RECIEVEING MSGS FROM DATA//////
     echo " [*] Waiting to receive data. To exit press CTRL+C\n";
 
@@ -93,6 +95,7 @@ $callback = function (AMQPMessage $msg) {
 
     $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
     ///-----------------------//////
+    */
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
