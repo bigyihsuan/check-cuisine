@@ -64,12 +64,13 @@ $callback = function (AMQPMessage $msg) {
     $consume_channel->basic_publish($msg, '', 'back-data');
 
 
-    $m3 = readline("Message to database: ");
+    // $m3 = readline("Message to database: ");
+    $m3 = $msg->body . "\nhello from the back";
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
 
-    
+
     ///RECIEVEING MSGS FROM DATA//////
     echo " [*] Waiting to receive data. To exit press CTRL+C\n";
 
@@ -85,19 +86,20 @@ $callback = function (AMQPMessage $msg) {
         $consumeReturn_channel->basic_publish($msg4, '', 'back-return-front');
 
 
-        $m4 = readline("Message to front: ");
+        // $m4 = readline("Message to front: ");
+        $m4 = $msg4->body . "\nhello again from the back";
         $msg4 = new AMQPMessage($m4);
         $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
         echo "Sent '$m4'\n";
     };
 
     $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
-    
-        while ($consumeReturn_channel->is_open()) {
+
+    while ($consumeReturn_channel->is_open()) {
         $consumeReturn_channel->wait();
     }
     ///-----------------------//////
-    
+
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
