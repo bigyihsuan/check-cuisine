@@ -65,7 +65,7 @@ $callback = function (AMQPMessage $msg) {
 
 
     // $m3 = readline("Message to database: ");
-    $m3 = $msg->body . "\nhello from the back";
+    $m3 = $msg->body . "\n1 hello from the back";
     $msg3 = new AMQPMessage($m3);
     $consumeData_channel->basic_publish($msg3, '', 'data-back');
     echo "Sent '$m3'\n";
@@ -87,7 +87,7 @@ $callback = function (AMQPMessage $msg) {
 
 
         // $m4 = readline("Message to front: ");
-        $m4 = $msg4->body . "\nhello again from the back";
+        $m4 = $msg4->body . "\n3 hello again from the back";
         $msg4 = new AMQPMessage($m4);
         $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
         echo "Sent '$m4'\n";

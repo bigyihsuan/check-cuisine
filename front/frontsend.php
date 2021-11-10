@@ -56,7 +56,7 @@ for ($i = 0; $i < $end; $i++) {
         $userpass = array($username => $password);
         $userpass_json = json_encode($userpass);
 
-        $msg1 = new AMQPMessage("hello from front");
+        $msg1 = new AMQPMessage("0 hello from front");
         $channel->basic_publish($msg1, '', 'front-send');
 
         // $msg2 = new AMQPMessage($m);
