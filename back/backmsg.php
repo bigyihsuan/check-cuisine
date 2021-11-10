@@ -92,6 +92,10 @@ $callback = function (AMQPMessage $msg) {
     };
 
     $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
+    
+        while ($consumeReturn_channel->is_open()) {
+        $consume_channel->wait();
+    }
     ///-----------------------//////
     
 };
