@@ -1,59 +1,189 @@
-
-  "rabbit_version":"3.9.8",
+{
+  "rabbit_version": "3.8.2",
+  "rabbitmq_version": "3.8.2",
   "users": [
-    {
-      "name":"guest",
-      "password_hash":"fd0GyzAf6C6hmgCJ5VU+TSyzUNlzypPlGb7VDKkqUvJqVxyd",
-      "hashing_algorithm":"rabbit_password_hashing_sha256",
-      "tags":"administrator"
-    }
+	{
+  	"name": "database",
+  	"password_hash": "OEkM4WcO5VpLhwV7HWO1qDIUNc4ud5hYrXcwhyooD1wNvdzF",
+  	"hashing_algorithm": "rabbit_password_hashing_sha256",
+  	"tags": "administrator"
+	},
+	{
+  	"name": "frontend",
+  	"password_hash": "9bUEwKWJjXsHp/cUM86Qpg5B/PVXglUMpGQLjCPU9QWXmjpy",
+  	"hashing_algorithm": "rabbit_password_hashing_sha256",
+  	"tags": "administrator"
+	},
+	{
+  	"name": "backend",
+  	"password_hash": "nQoY2mO+Gg4Irm6mInyGrahhENj0jzVV0+VH+WcE3U67LLeO",
+  	"hashing_algorithm": "rabbit_password_hashing_sha256",
+  	"tags": "administrator"
+	},
+	{
+  	"name": "admin",
+  	"password_hash": "kukUnV0sIcXKuYrHd6otIRA2t4ntnlGXRCgXzZCdKIQMJs/1",
+  	"hashing_algorithm": "rabbit_password_hashing_sha256",
+  	"tags": "administrator"
+	},
+	{
+  	"name": "guest",
+  	"password_hash": "xMGpWfRAx3R/zquqjpWfN3m3AgMCqZkocCNQTlvYhsD0aczV",
+  	"hashing_algorithm": "rabbit_password_hashing_sha256",
+  	"tags": "administrator"
+	}
   ],
   "vhosts": [
-    {
-      "name":"/"
-    }
+	{
+  	"name": "cluster_example"
+	},
+	{
+  	"name": "/"
+	}
   ],
-  "permissions":[
-    {
-      "user":"guest",
-      "vhost":"/",
-      "configure":".*",
-      "write":".*",
-      "read":".*"
-    }
+  "permissions": [
+	{
+  	"user": "backend",
+  	"vhost": "/",
+  	"configure": ".*",
+  	"write": ".*",
+  	"read": ".*"
+	},
+	{
+  	"user": "frontend",
+  	"vhost": "/",
+  	"configure": ".*",
+  	"write": ".*",
+  	"read": ".*"
+	},
+	{
+  	"user": "database",
+  	"vhost": "/",
+  	"configure": ".*",
+  	"write": ".*",
+  	"read": ".*"
+	},
+	{
+  	"user": "admin",
+  	"vhost": "cluster_example",
+  	"configure": ".*",
+  	"write": ".*",
+  	"read": ".*"
+	},
+	{
+  	"user": "guest",
+  	"vhost": "/",
+  	"configure": ".*",
+  	"write": ".*",
+  	"read": ".*"
+	}
   ],
-  "parameters":[],
-  "policies":[
-    {"vhost":"/","name":"ha","pattern":"", "definition":{"ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5}}
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+	{
+  	"name": "cluster_name",
+  	"value": "rabbit@jeff5"
+	}
   ],
-  "queues":[
-    {
-      "name":"q.user.created",
-      "vhost":"/",
-      "durable":true,
-      "auto_delete":true,
-      "arguments":{}
-    }
+  "policies": [],
+  "queues": [
+	{
+  	"name": "data-back",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {}
+	},
+	{
+  	"name": "front-back",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {}
+	},
+	{
+  	"name": "back-data",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {}
+	},
+	{
+  	"name": "front-receive",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {}
+	},
+	{
+  	"name": "front-send",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {}
+	},
+	{
+  	"name": "data-return-back",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {}
+	},
+	{
+  	"name": "back-return-front",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {
+    	"x-queue-type": "classic"
+  	}
+	},
+	{
+  	"name": "front-recieve",
+  	"vhost": "/",
+  	"durable": true,
+  	"auto_delete": false,
+  	"arguments": {}
+	}
   ],
-  "exchanges":[
-    {
-      "name":"e.user.created",
-      "vhost":"/",
-      "type":"topic",
-      "durable":true,
-      "auto_delete":false,
-      "internal":false,
-      "arguments":{}
-    }
+  "exchanges": [
+	{
+  	"name": "Data",
+  	"vhost": "/",
+  	"type": "direct",
+  	"durable": true,
+  	"auto_delete": false,
+  	"internal": false,
+  	"arguments": {}
+	},
+	{
+  	"name": "Test",
+  	"vhost": "/",
+  	"type": "direct",
+  	"durable": true,
+  	"auto_delete": false,
+  	"internal": false,
+  	"arguments": {}
+	}
   ],
-  "bindings":[
-    {
-      "source":"e.user.created",
-      "vhost":"/",
-      "destination":"q.user.created",
-      "destination_type":"queue",
-      "routing_key":"user.created",
-      "arguments":{}
-    }
+  "bindings": [
+	{
+  	"source": "Data",
+  	"vhost": "/",
+  	"destination": "data-back",
+  	"destination_type": "queue",
+  	"routing_key": "",
+  	"arguments": {}
+	},
+	{
+  	"source": "Test",
+  	"vhost": "/",
+  	"destination": "back-data",
+  	"destination_type": "queue",
+  	"routing_key": "",
+  	"arguments": {}
+	}
   ]
 }
+
