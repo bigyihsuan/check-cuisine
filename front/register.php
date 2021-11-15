@@ -31,6 +31,7 @@ function checkPasswords(form) {
     <?php
     include_once __DIR__ . "/../servers.php";
     include_once __DIR__ . "/../rabbit_endpoints.php";
+    include_once __DIR__ . "/../database/db.php";
 
     // check passwords
     // get info from post
@@ -49,6 +50,13 @@ function checkPasswords(form) {
     list(, $is_success) = explode(" ", $result, 2);
     $is_success = $result === "true" ? true : false;
 
+  //  $db = getDB();
+    //if(isset($db)){
+    //  $stmt = $db->prepare("INSERT INTO users(username, password) VALUES(:username, :password)");
+    //  $params = array(":username"=>$username, ":password"=>$hash);
+    //  $r = $stmt->execute($params);
+    //}
+    
     if ($is_success) {
         // registration happened goodly
         // login as new user
