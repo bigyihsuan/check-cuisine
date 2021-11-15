@@ -29,7 +29,8 @@ function checkPasswords(form) {
     <p> Registration Page </p>
 
     <?php
-    include_once "servers.php";
+    include_once __DIR__ . "/../servers.php";
+    include_once __DIR__ . "/../rabbit_endpoints.php";
 
     // check passwords
     // get info from post

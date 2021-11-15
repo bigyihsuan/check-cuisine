@@ -1,6 +1,7 @@
 <?php
-include_once "servers.php";
-include_once "frontsend.php";
+include_once __DIR__ . "/../servers.php";
+include_once __DIR__ . "/../rabbit_endpoints.php";
+include_once __DIR__ . "/frontsend.php";
 
 // check passwords
 // get info from post

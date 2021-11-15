@@ -2,7 +2,7 @@
 
 // https://fdc.nal.usda.gov/api-guide.html
 
-include_once "servers.php";
+include_once __DIR__ . "/../servers.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

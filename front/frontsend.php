@@ -1,6 +1,6 @@
 <?php
-include("../servers.php");
-include_once "rabbit_endpoints.php";
+include_once __DIR__ . "/../servers.php";
+include_once __DIR__ . "/../rabbit_endpoints.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

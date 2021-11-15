@@ -1,5 +1,6 @@
 <?php
-include("servers.php");
+include_once __DIR__ . "/../servers.php";
+include_once __DIR__ . "/../rabbit_endpoints.php";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -14,7 +15,6 @@ echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function ($msg) {
     echo ' [x] Received ', $msg->body, "\n";
-   
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
