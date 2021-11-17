@@ -61,12 +61,15 @@ $channel->basic_publish($msg1, '', 'front-send');
 
 $channel->queue_declare('front-receive', false, true, false, false);
 
-echo "Sent login info to backend \n\n";
+// echo "Sent login info to backend \n\n";
 
-echo " [*] Receiving data. To exit press CTRL+C\n";
+// echo " [*] Receiving data. To exit press CTRL+C\n";
 
 $callback = function ($msg) {
-    echo ' [x] Received ', $msg->body, "\n";
+    echo <<<HTML
+    <h1>{$msg->body}</h1>
+    HTML;
+    // echo ' [x] Received ', $msg->body, "\n";
 };
 
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
