@@ -87,6 +87,7 @@ for ($i = 0; $i < $end; $i++) {
         $channel->basic_consume('front-receive', '', false, true, false, false, $callback);
 
         while ($channel->is_open()) {
+            error_log("waiting for message...");
             $channel->wait();
         }
 
