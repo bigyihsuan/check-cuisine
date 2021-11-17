@@ -44,44 +44,39 @@ for ($i = 0; $i < $end; $i++) {
     echo "Sent '$m'\n";
 }
 */
-$end = 2;
-for ($i = 0; $i < $end; $i++) {
-    if ($i == 1) {
-        //$username = readline("Username: ");
-        //$password = readline("Password: ");
+//$username = readline("Username: ");
+//$password = readline("Password: ");
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-        $userpass = array($username => $password);
-        $userpass_json = json_encode($userpass);
+$userpass = array($username => $password);
+$userpass_json = json_encode($userpass);
 
-        $msg1 = new AMQPMessage("0 hello from front");
-        $channel->basic_publish($msg1, '', 'front-send');
+$msg1 = new AMQPMessage("0 $userpass_json");
+$channel->basic_publish($msg1, '', 'front-send');
 
-        // $msg2 = new AMQPMessage($m);
-        // $channel->basic_publish($msg2, '', 'front-send');
+// $msg2 = new AMQPMessage($m);
+// $channel->basic_publish($msg2, '', 'front-send');
 
-        $channel->queue_declare('front-receive', false, true, false, false);
+$channel->queue_declare('front-receive', false, true, false, false);
 
-        echo "Sent login info to backend \n\n";
+echo "Sent login info to backend \n\n";
 
-        echo " [*] Receiving data. To exit press CTRL+C\n";
+echo " [*] Receiving data. To exit press CTRL+C\n";
 
-        $callback = function ($msg) {
-            echo ' [x] Received ', $msg->body, "\n";
-        };
+$callback = function ($msg) {
+    echo ' [x] Received ', $msg->body, "\n";
+};
 
-        // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
-        $channel->basic_consume('front-receive', '', false, true, false, false, $callback);
+// basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+$channel->basic_consume('front-receive', '', false, true, false, false, $callback);
 
-        while ($channel->is_open()) {
-            $channel->wait();
-        }
-    }
-
-    //echo "Sent login info to backend \n";
+while ($channel->is_open()) {
+    $channel->wait();
 }
+
+//echo "Sent login info to backend \n";
 
 $channel->close();
 $connection->close();
