@@ -25,13 +25,13 @@ VALUES
 INSERT INTO meatfoodinfo(Food, Serving_Size, Calories, Fat, Protein, Carbs, Fiber, Sugar)
 VALUES
 (
-'Chicken Leg', 214, 15, 16, 0, 0, 0
+'Chicken Leg', 100, 214, 15, 16, 0, 0, 0
 );
 
 INSERT INTO meatfoodinfo(Food, Serving_Size, Calories, Fat, Protein, Carbs, Fiber, Sugar)
 VALUES
 (
-'Chicken Wing', 191, 12, 17, 0, 0, 0
+'Chicken Wing', 100, 191, 12, 17, 0, 0, 0
 );
 
 INSERT INTO meatfoodinfo(Food, Serving_Size, Calories, Fat, Protein, Carbs, Fiber, Sugar)
@@ -43,7 +43,7 @@ VALUES
 INSERT INTO meatfoodinfo(Food, Serving_Size, Calories, Fat, Protein, Carbs, Fiber, Sugar)
 VALUES
 (
-'Chicken Liver', 119, 4, 16, 0, 0, 0
+'Chicken Liver', 100, 119, 4, 16, 0, 0, 0
 );
 
 INSERT INTO meatfoodinfo(Food, Serving_Size, Calories, Fat, Protein, Carbs, Fiber, Sugar)
@@ -156,7 +156,7 @@ VALUES
 
 INSERT INTO meatfoodinfo(Food, Serving_Size, Calories, Fat, Protein, Carbs, Fiber, Sugar)
 VALUES
-(,
+(
 'Pork Shoulder', 100, 236, 17, 17, 0, 0, 0
 );
 
