@@ -25,7 +25,7 @@ while ($channel->is_open()) {
     $channel->wait();
     
       if ($msgnum == 1) {
-        $consume_channel->close();
+        $channel->close();
     }
 }
 
