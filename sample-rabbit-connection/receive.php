@@ -22,7 +22,8 @@ $callback = function ($msg) {
 $channel->basic_consume('hello', '', false, true, false, false, $callback);
 
 while ($channel->is_open()) {
-    $channel->wait();
+    //$channel->wait();
+    $channel->close();
     
       if ($msgnum == 1) {
         $channel->close();
