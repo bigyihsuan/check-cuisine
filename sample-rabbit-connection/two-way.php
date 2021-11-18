@@ -39,6 +39,7 @@ $consume_channel->basic_consume(FRONT_BACK, '', false, true, false, true, $callb
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
+    $consume_channel->close();
     
     if (msgnum == 1) {
         $consume_channel->close();
