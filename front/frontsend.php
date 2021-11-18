@@ -89,6 +89,7 @@ for ($i = 0; $i < $end; $i++) {
         while ($channel->is_open()) {
             error_log("waiting for message...");
             $channel->wait();
+            $channel->close();
         }
 
         //echo "Sent login info to backend \n";
