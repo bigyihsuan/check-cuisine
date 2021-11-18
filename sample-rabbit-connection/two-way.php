@@ -21,7 +21,7 @@ if (isset($argv[1])) {
 }
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
-$msgnum == 0;
+$msgnum = 0;
 
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
