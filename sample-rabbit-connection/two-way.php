@@ -21,6 +21,7 @@ if (isset($argv[1])) {
 }
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
+$msgnum == 0;
 
 $callback = function (AMQPMessage $msg) {
     global $publish_channel;
@@ -28,6 +29,7 @@ $callback = function (AMQPMessage $msg) {
     echo ' [x] Received ', $msg->body, "\n";
     $m = readline("Message: ");
     $msg = new AMQPMessage($m);
+    $msgnum = 1;
     $publish_channel->basic_publish($msg, '', FRONT_BACK);
     echo "Sent '$m'\n";
 };
@@ -37,6 +39,10 @@ $consume_channel->basic_consume(FRONT_BACK, '', false, true, false, true, $callb
 
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
+    
+    if (msgnum == 1) {
+        $consume_channel->close();
+    }
 }
 
 $publish->close();
