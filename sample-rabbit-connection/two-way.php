@@ -37,6 +37,7 @@ $callback = function (AMQPMessage $msg) {
 // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
 $consume_channel->basic_consume(FRONT_BACK, '', false, true, false, true, $callback);
 
+/*
 while ($consume_channel->is_open()) {
     $consume_channel->wait();
     $consume_channel->close();
@@ -45,6 +46,7 @@ while ($consume_channel->is_open()) {
         $consume_channel->close();
     }
 }
+*/
 
 $publish->close();
 $consume->close();
