@@ -1,6 +1,6 @@
 <?php
 const front_server = "25.53.122.72"; // yasu
-const rabbit_server = "25.7.219.23"; // jeff
+const rabbit_server = "25.6.107.45"; // jeff (cluster2)
 const back_server = "25.51.190.242"; // yi-hsuan
 const database_server = "25.53.49.9"; // jakub
 
