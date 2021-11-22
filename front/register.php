@@ -50,12 +50,12 @@ function checkPasswords(form) {
     list(, $is_success) = explode(" ", $result, 2);
     $is_success = $result === "true" ? true : false;
 
-  //  $db = getDB();
-    //if(isset($db)){
-    //  $stmt = $db->prepare("INSERT INTO users(username, password) VALUES(:username, :password)");
-    //  $params = array(":username"=>$username, ":password"=>$hash);
-    //  $r = $stmt->execute($params);
-    //}
+    $db = getDB();
+    if(isset($db)){
+      $stmt = $db->prepare("INSERT INTO users(username, password) VALUES(:username, :password)");
+      $params = array(":username"=>$username, ":password"=>$hash);
+      $r = $stmt->execute($params);
+    }
     
     if ($is_success) {
         // registration happened goodly
