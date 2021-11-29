@@ -15,16 +15,17 @@ $consumeData_channel = $consume->channel();
 $publishReturn_channel = $publish->channel();
 $consumeReturn_channel = $consume->channel();
 
-// queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
-$publish_channel->queue_declare('front-send', false, true, false, false);
-//$consume_channel->queue_declare('back-data', 'Test', true, false, false);
-$consume_channel->queue_declare('back-data', false, true, false, false);
-//$consumeData_channel->queue_declare('data-back', 'Data', true, false, false);
-$consumeData_channel->queue_declare('data-back', false, true, false, false);
-$publishReturn_channel->queue_declare('front-receive', false, true, false, false);
-$consumeReturn_channel->queue_declare('data-return-back', false, true, false, false);
+while (true) {
+    // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
+    $publish_channel->queue_declare('front-send', false, true, false, false);
+    //$consume_channel->queue_declare('back-data', 'Test', true, false, false);
+    $consume_channel->queue_declare('back-data', false, true, false, false);
+    //$consumeData_channel->queue_declare('data-back', 'Data', true, false, false);
+    $consumeData_channel->queue_declare('data-back', false, true, false, false);
+    $publishReturn_channel->queue_declare('front-receive', false, true, false, false);
+    $consumeReturn_channel->queue_declare('data-return-back', false, true, false, false);
 
-/*
+    /*
 if (isset($argv[1])) {
     $msg = new AMQPMessage($argv[1]);
     $msg->setPriority(2);
@@ -34,7 +35,7 @@ if (isset($argv[1])) {
     echo "Sent '{$msg->getBody()}'\n";
 }
 */
-while (true) {
+
     echo " [*] Waiting for messages. To exit press CTRL+C\n";
     /*
 $callback2 = function (AMQPMessage $msg2) {
@@ -110,9 +111,10 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
     while ($consume_channel->is_open()) {
         $consume_channel->wait();
     }
-}
 
-$publish->close();
-$consume->close();
-$publish_channel->close();
-$consume_channel->close();
+
+    $publish->close();
+    $consume->close();
+    $publish_channel->close();
+    $consume_channel->close();
+}
