@@ -1,6 +1,7 @@
 <?php
 include("servers.php");
 include_once "rabbit_endpoints.php";
+include("./db.php");
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -39,14 +40,17 @@ $callback = function (AMQPMessage $msg) {
 
     echo ' [x] Received ', $msg->body, "\n";
 
+    $result = pg_query("SELECT * FROM users;") or die("Query Failed");
+    $rows = pg_fetch_all($result, PGSQL_ASSOC);
+    $json = json_encode($rows);
 
     //$consumeFront_channel->basic_consume($msg, '', 'data-back');
 
     // $m2 = readline("Message: ");
-    $m2 = $msg->body . "\n2 hello from the data";
-    $msg2 = new AMQPMessage($m2);
+    // $m2 = $msg->body . "\n2 hello from the data";
+    $msg2 = new AMQPMessage($json);
     $publishFront_channel->basic_publish($msg2, '', 'data-return-back');
-    echo "Sent '$m2'\n";
+    echo "Sent '$json'\n";
 
     //echo "Sent '$msg'\n";
 

@@ -88,7 +88,8 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
 
 
             //$m4 = readline("Message to front: ");
-            $m4 = $msg4->body . "\n3 hello again from the back";
+            // $m4 = $msg4->body . "\n3 hello again from the back";
+            $m4 = $msg4->body;
             $msg4 = new AMQPMessage($m4);
             $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
             echo "Sent '$m4'\n";
