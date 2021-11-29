@@ -33,11 +33,13 @@ if (isset($argv[1])) {
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function (AMQPMessage $msg) {
-    include("./db.php");
+    include(__DIR__ . "/db.php");
     global $publish_channel;
     global $consume_channel;
     global $consumeFront_channel;
     global $publishFront_channel;
+
+    global $db;
 
     echo ' [x] Received ', $msg->body, "\n";
 
