@@ -1,7 +1,7 @@
 <?php
 include("servers.php");
 include_once "rabbit_endpoints.php";
-include("./db.php");
+
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -33,6 +33,7 @@ if (isset($argv[1])) {
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 $callback = function (AMQPMessage $msg) {
+    include("./db.php");
     global $publish_channel;
     global $consume_channel;
     global $consumeFront_channel;
@@ -40,7 +41,7 @@ $callback = function (AMQPMessage $msg) {
 
     echo ' [x] Received ', $msg->body, "\n";
 
-    $result = pg_query("SELECT * FROM users;") or die("Query Failed");
+    $result = pg_query($db, "SELECT * FROM users;") or die("Query Failed");
     $rows = pg_fetch_all($result, PGSQL_ASSOC);
     $json = json_encode($rows);
 
