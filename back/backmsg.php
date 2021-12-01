@@ -99,6 +99,8 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
 
         while ($consumeReturn_channel->is_open()) {
             $consumeReturn_channel->wait();
+            $channel->close();
+            $connection->close();
         }
         ///-----------------------//////
 
