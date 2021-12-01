@@ -57,7 +57,7 @@ $callback = function (AMQPMessage $msg) {
     
     
     while ($publishFront_channel->is_open()) {
-        $consumeReturn_channel->wait();
+        //$consumeReturn_channel->wait();
         $channel->close();
         $connection->close();
     }
