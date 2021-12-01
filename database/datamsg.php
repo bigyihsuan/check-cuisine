@@ -55,8 +55,12 @@ $callback = function (AMQPMessage $msg) {
     $publishFront_channel->basic_publish($msg2, '', 'data-return-back');
     echo "Sent '$json'\n";
     
-    $channel->close();
-    $connection->close();
+    
+    while ($publishFront_channel->is_open()) {
+        $consumeReturn_channel->wait();
+        $channel->close();
+        $connection->close();
+    }
 
     //echo "Sent '$msg'\n";
 
