@@ -44,8 +44,8 @@ $callback = function (AMQPMessage $msg) {
 
     echo ' [x] Received ', $msg->body, "\n";
 
-    $result = mysqli_query($db, "SELECT * FROM users;") or die("Query Failed");
-    $rows = mysqli_fetch_all($result, MYSQL_ASSOC);
+    ($result = $db->query("SELECT * FROM users;")) or die("Query Failed");
+    $rows = $result->fetch_all (MYSQL_ASSOC);
     $json = json_encode($rows);
 
     //$consumeFront_channel->basic_consume($msg, '', 'data-back');
