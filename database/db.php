@@ -13,4 +13,7 @@ error_reporting(E_ALL);
 //     }
 // }
 $db = new mysqli('localhost', 'webadmin', '123', 'usersdb');
+if(mysqli_connect_errno()){
+exit();
+}
 global $db;
