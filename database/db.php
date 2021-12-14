@@ -5,12 +5,12 @@ error_reporting(E_ALL);
 
 // if (!isset($db)) {
 //     try {
-//         $db = pg_connect("host=node87495-checkcuisinedb.ny-2.paas.massivegrid.net port=5432 dbname=usersdb user=webadmin password=1pQCRimGg5");
+//         $db = new mysqli('25.53.49.9', 'webadmin', '123', 'usersdb');
 //         // $db = new PDO($conn, $dbuser, $dbpass);
 //     } catch (Exception $e) {
 //         var_export($e);
 //         $db = null;
 //     }
 // }
-$db = pg_connect("host=node87495-checkcuisinedb.ny-2.paas.massivegrid.net port=5432 dbname=usersdb user=webadmin password=1pQCRimGg5");
+$db = new mysqli('25.53.49.9', 'webadmin', '123', 'usersdb');
 global $db;
