@@ -12,5 +12,5 @@ error_reporting(E_ALL);
 //         $db = null;
 //     }
 // }
-$db = new mysqli('25.53.49.9', 'webadmin', '123', 'usersdb');
+$db = new mysqli('localhost', 'webadmin', '123', 'usersdb');
 global $db;
