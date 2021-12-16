@@ -8,11 +8,40 @@ include_once __DIR__ . "/frontsend.php";
 $username = $_POST['username'];
 $password = $_POST['password'];
 
+$data = $_POST;
 
-// login as given user
-$result = run_query(Prefix::LOGIN);
-list(, $is_success) = explode(" ", $result, 2);
-$is_success = $result === "true" ? true : false;
+if (empty($data['username']) || empty($data['password'])) {
+  die('Username or password are required!');
+}
+
+$username = $data['username'];
+$password = $data['password'];
+
+$dsn = 'mysql:dbname=usersdb;host=localhost';
+$dbUser = 'webadmin';
+$dbPassword = '123';
+
+try {
+  $connection = new PDO($dsn, $dbUser, $dbPassword);
+} catch (PDOException $exception) {
+  die('Connection failed: ' . $exception->getMessage());
+}
+
+$statement = $connection->prepare('SELECT * FROM users WHERE username = :username');
+$statement->execute([':username' => $username]);
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+if (empty($result)) {
+  die('No such user with the username!');
+}
+
+$user = array_shift($result);
+
+if ($user['username'] === $username && $user['password'] === $password) {
+  echo 'You have successfully logged in!';
+} else {
+  die('Incorrect username or password!');
+}
 
 if ($is_success) {
     // redirect to homepage
