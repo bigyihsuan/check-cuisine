@@ -36,8 +36,8 @@ function checkPasswords(form) {
     // include_once __DIR__ . "/../database/db.php";
     include_once __DIR__ . "/frontsend.php";
 
- 
-  /* 
+
+    /* 
     // check passwords
     // get info from post
     $username = $_POST['username'];
@@ -72,27 +72,28 @@ function checkPasswords(form) {
     <?php
     }
     ?>
-*/
-    
-$username = $_POST['username'];
-$password = $_POST['password'];
+    */
+
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
 
-// Register as given user
-$result = run_query(Prefix::REGISTER);
-list(, $is_success) = explode(" ", $result, 2);
-$is_success = $result === "true" ? true : false;
+    // Register as given user
+    $result = run_query(Prefix::REGISTER);
+    list(, $is_success) = explode(" ", $result, 2);
+    $is_success = $result === "true" ? true : false;
 
-if ($is_success) {
+    if ($is_success) {
     // redirect to homepage
     session_start();
     $_SESSION['logged_user'] = $username;
     header("refresh:0; url=register.html");
-} else { ?>
+    } else { ?>
     <h1>Error: Error while registering new user</h1>
     <?php
-}
-    
+    }
+    ?>
+
     <form method="POST">
 
         <input name="username" type="text" placeholder="Enter your username"
