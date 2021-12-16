@@ -7,7 +7,7 @@ include_once __DIR__ . "/frontsend.php";
 // get info from post
 $username = $_POST['username'];
 $password = $_POST['password'];
-
+/*
 $data = $_POST;
 
 if (empty($data['username']) || empty($data['password'])) {
@@ -42,7 +42,7 @@ if ($user['username'] === $username && $user['password'] === $password) {
 } else {
   die('Incorrect username or password!');
 }
-
+*/
 if ($is_success) {
     // redirect to homepage
     session_start();
