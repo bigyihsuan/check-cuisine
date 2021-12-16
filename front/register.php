@@ -32,6 +32,7 @@ function checkPasswords(form) {
     include_once __DIR__ . "/../servers.php";
     include_once __DIR__ . "/../rabbit_endpoints.php";
     // include_once __DIR__ . "/../database/db.php";
+    include_once __DIR__ . "/frontsend.php";
 
     // check passwords
     // get info from post
