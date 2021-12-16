@@ -31,7 +31,7 @@ function checkPasswords(form) {
     <?php
     include_once __DIR__ . "/../servers.php";
     include_once __DIR__ . "/../rabbit_endpoints.php";
-    include_once __DIR__ . "/../database/db.php";
+    // include_once __DIR__ . "/../database/db.php";
 
     // check passwords
     // get info from post
