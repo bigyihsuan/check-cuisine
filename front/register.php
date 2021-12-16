@@ -91,10 +91,7 @@ if ($is_success) {
 } else { ?>
     <h1>Error: Error while registering new user</h1>
     <?php
-    }
-    ?>
-<?php
-    } 
+}
     
     <form method="POST">
 
