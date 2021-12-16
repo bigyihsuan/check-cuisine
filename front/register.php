@@ -1,116 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include_once __DIR__ . "/../servers.php";
+include_once __DIR__ . "/../rabbit_endpoints.php";
+include_once __DIR__ . "/frontsend.php";
 
-<head>
-    <meta charset="UTF-8">
-    <title>Check Cuisine Register Page</title>
-</head>
-<script>
-function checkPasswords(form) {
-    let match = form.password.value == form.confirm.value;
-    if (!match) {
-        alert("Passwords don't match.");
-    }
-    return match;
+// check passwords
+// get info from post
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+$data = $_POST;
+
+if (empty($data['username']) || empty($data['password'])) {
+  die('Username or password are required!');
 }
-</script>
 
-<body>
-    <style>
-    * {
-        text-align: center;
-    }
+$username = $data['username'];
+$password = $data['password'];
 
-    input {
-        border: 1px solid black;
-        break-after: auto;
-    }
-    </style>
-    <p> Registration Page </p>
+$dsn = 'mysql:dbname=usersdb;host=localhost';
+$dbUser = 'webadmin';
+$dbPassword = '123';
 
-    <?php
-    include_once __DIR__ . "/../servers.php";
-    include_once __DIR__ . "/../rabbit_endpoints.php";
+try {
+  $connection = new PDO($dsn, $dbUser, $dbPassword);
+} catch (PDOException $exception) {
+  die('Connection failed: ' . $exception->getMessage());
+}
 
-    require_once __DIR__ . '/../vendor/autoload.php';
-    // include_once __DIR__ . "/../database/db.php";
-    include_once __DIR__ . "/frontsend.php";
+$statement = $connection->prepare('SELECT * FROM users WHERE username = :username');
+$statement->execute([':username' => $username]);
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+if (empty($result)) {
+  die('No such user with the username!');
+}
 
-    /* 
-    // check passwords
-    // get info from post
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $confirm = $_POST['confirm'];
+$user = array_shift($result);
 
-    if (strcmp($password, $confirm) !== 0) { ?>
-    <h1>Passwords don't match!</h1>
-    <?php }
+if ($user['username'] === $username && $user['password'] === $password) {
+  echo 'You have successfully logged in!';
+} else {
+  die('Incorrect username or password!');
+}
 
-   
-    $_POST['password'] = password_hash($password . $username, null);
-    include "./frontsend.php";
-    $result = run_query(Prefix::REGISTER);
-    list(, $is_success) = explode(" ", $result, 2);
-    $is_success = $result === "true" ? true : false;
-
-    if ($is_success) {
-        // registration happened goodly
-        // login as new user
-        $result = run_query(Prefix::LOGIN);
-        list(, $is_success) = explode(" ", $result, 2);
-        $is_success = $result === "true" ? true : false;
-        if ($is_success) {
-            // redirect to homepage
-            session_start();
-            $_SESSION['logged_user'] = $username;
-            header("refresh:0; url=frontend.html");
-        }
-    } else { ?>
-    <h1>Error: Error while registering new user</h1>
-    <?php
-    }
-    ?>
-    */
-
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-
-    // Register as given user
-    $result = run_query(Prefix::REGISTER);
-    list(, $is_success) = explode(" ", $result, 2);
-    $is_success = $result === "true" ? true : false;
-
-    if ($is_success) {
+if ($is_success) {
     // redirect to homepage
     session_start();
     $_SESSION['logged_user'] = $username;
-    header("refresh:0; url=register.html");
-    } else { ?>
-    <h1>Error: Error while registering new user</h1>
-    <?php
-    }
-    ?>
-
-    <form method="POST">
-
-        <input name="username" type="text" placeholder="Enter your username"
-            required /><br>
-
-        <input type="password" name="password" placeholder="Enter password"
-            required /><br>
-
-        <input type="password" name="confirm" placeholder="Re-Enter password"
-            required /><br>
-
-        <input type="submit" value="Register" />
-
-        <figcaption><a href="login.html"> Log In Here </a>
-            <figcaption>
-    </form>
-
-</body>
-
-</html>
+    header("refresh:0; url=frontend.html");
+} else {
+    // echo out a fail message
+    echo "<h1>Error: incorrect username or password!</h1>";
+    header("refresh:2; url=login.html");
