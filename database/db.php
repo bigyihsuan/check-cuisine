@@ -4,11 +4,11 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $db = mysqli_connect('localhost', 'webadmin', '123');
-mysqli_select_db('$db', 'usersdb');
+mysqli_select_db(mysqli_connect('localhost', 'webadmin', '123'), 'usersdb');
 
 $s = "SELECT * FROM users WHERE username = '$username'";
     
-$result = mysqli_query($db, $s);
+$result = mysqli_query(mysqli_connect('localhost', 'webadmin', '123'), $s);
 $num = mysqli_num_rows($result);
 
 $username = $_POST['username'];
@@ -18,7 +18,7 @@ if($num == 1){
     echo "Username Already Taken";
 }else{
     $reg = "INSERT INTO users(username, password) VALUES ('$username', '$password')";
-    mysqli_query($db, $reg);
+    mysqli_query(mysqli_connect('localhost', 'webadmin', '123'), $reg);
     echo "Registration Successful";
  }
 
