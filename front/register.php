@@ -31,9 +31,20 @@ function checkPasswords(form) {
     <?php
     include_once __DIR__ . "/../servers.php";
     include_once __DIR__ . "/../rabbit_endpoints.php";
-    // include_once __DIR__ . "/../database/db.php";
-    include_once __DIR__ . "/frontsend.php";
 
+    require_once __DIR__ . '/../vendor/autoload.php';
+    // include_once __DIR__ . "/../database/db.php";
+    // include_once __DIR__ . "/frontsend.php";
+
+
+    use PhpAmqpLib\Connection\AMQPStreamConnection;
+    use PhpAmqpLib\Message\AMQPMessage;
+
+    $connection = new AMQPStreamConnection(rabbit_server, 5672, front_server_creds[0], front_server_creds[1]);
+    $channel = $connection->channel();
+
+    // queue_declare(name, passive?, durable?, exclusive?, auto_delete?, nowait?)
+    $channel->queue_declare('front-send', false, true, false, false);
     // check passwords
     // get info from post
     $username = $_POST['username'];
@@ -45,12 +56,49 @@ function checkPasswords(form) {
     <?php }
 
     // passwords match, send to the backend
+    $userpass = array($username => $password);
+    $userpass_json = json_encode($userpass);
+
+    $msg1 = new AMQPMessage("0 $userpass_json");
+    $channel->basic_publish($msg1, '', 'front-send');
+
+    // $msg2 = new AMQPMessage($m);
+    // $channel->basic_publish($msg2, '', 'front-send');
+
+    $channel->queue_declare('front-receive', false, true, false, false);
+
+    // echo "Sent login info to backend \n\n";
+
+    // echo " [*] Receiving data. To exit press CTRL+C\n";
+
+    $callback = function ($msg) {
+        echo <<<HTML
+        <h1>{$msg->body}</h1>
+        HTML;
+        // echo ' [x] Received ', $msg->body, "\n";
+    };
+
+    // basic_consume(queue name, consumer tag, no local?, no ack?, exclusive?, no wait?, callback)
+    $channel->basic_consume('front-receive', '', false, true, false, false, $callback);
+
+    while ($channel->is_open()) {
+        error_log("waiting for message...");
+        $channel->wait();
+        $channel->close();
+        $connection->close();
+    }
+
+    //echo "Sent login info to backend \n";
+
+    $channel->close();
+    $connection->close();
+
     $_POST['password'] = password_hash($password . $username, null);
     include "./frontsend.php";
     $result = run_query(Prefix::REGISTER);
     list(, $is_success) = explode(" ", $result, 2);
     $is_success = $result === "true" ? true : false;
-    
+
     if ($is_success) {
         // registration happened goodly
         // login as new user
