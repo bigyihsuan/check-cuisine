@@ -8,9 +8,6 @@ error_reporting(E_ALL);
 $db = mysqli_connect('localhost', 'webadmin', '123');
 mysqli_select_db($db, 'usersdb');
 
-$username = $_POST['username'];
-$password = $_POST['password'];
-
 $s = "SELECT * FROM users WHERE username = '$username'";
 
 $result = mysqli_query($db, $s);
