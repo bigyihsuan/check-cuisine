@@ -50,6 +50,19 @@ function checkPasswords(form) {
     list(, $is_success) = explode(" ", $result, 2);
     $is_success = $result === "true" ? true : false;
     
+    $s = "SELECT * FROM users WHERE username = '$username'";
+    
+    $result = mysqli_query($db, $s);
+    $num = mysqli_num_rows($result);
+    
+    if($num == 1){
+        echo "Username Already Taken";
+    }else{
+        $reg = "INSERT INTO users(name, password) VALUES ('$username', '$password')";
+        mysqli_query($db, $reg);
+        echo "Registration Successful";
+    }
+    
     if ($is_success) {
         // registration happened goodly
         // login as new user
