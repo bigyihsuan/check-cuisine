@@ -52,3 +52,4 @@ if ($is_success) {
     // echo out a fail message
     echo "<h1>Error: incorrect username or password!</h1>";
     header("refresh:2; url=register.html");
+}
