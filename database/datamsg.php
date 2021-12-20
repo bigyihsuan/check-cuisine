@@ -44,7 +44,7 @@ $callback = function (AMQPMessage $msg) {
     $db = dbCon();
 
     echo ' [x] Received ', $msg->body, "\n";
-    $info = json_decode($msg->body);
+    $info = json_decode($msg->body, true);
     $username = $info['username'];
     $password = $info['password'];
 
