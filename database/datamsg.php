@@ -45,7 +45,7 @@ $callback = function (AMQPMessage $msg) {
     echo ' [x] Received ', $msg->body, "\n";
 
     ($result = $db->query("SELECT * FROM users;")) or die("Query Failed");
-    $rows = $result->fetch_all (MYSQL_ASSOC);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
     $json = json_encode($rows);
 
     //$consumeFront_channel->basic_consume($msg, '', 'data-back');
@@ -55,7 +55,7 @@ $callback = function (AMQPMessage $msg) {
     $msg2 = new AMQPMessage($json);
     $publishFront_channel->basic_publish($msg2, '', 'data-return-back');
     echo "Sent '$json'\n";
-    
+
     /*
     while ($publishFront_channel->is_open()) {
         $publish_channel->close();
