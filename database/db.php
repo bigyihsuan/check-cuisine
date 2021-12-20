@@ -27,6 +27,6 @@ if ($num == 1) {
 if (mysqli_connect_errno()) {
     exit();
 }
-global $db;
+global $con;
 
 ?>
