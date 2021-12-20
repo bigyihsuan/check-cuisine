@@ -40,7 +40,8 @@ $callback = function (AMQPMessage $msg) {
     global $consumeFront_channel;
     global $publishFront_channel;
 
-    global $db;
+
+    $db = dbCon();
 
     echo ' [x] Received ', $msg->body, "\n";
 
