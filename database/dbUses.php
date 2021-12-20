@@ -31,7 +31,7 @@ function login($username, $password){
 }
 
 function passHash($password){
-	$new = $password . 'sdawfegrthyjuhtgrfeddwadasxcx0720';
+	$new = $password . 'abcdefghjiklmaopqrstuvwxyz1234567890';
 	$hash = hash('sha256',$new);
 	return $hash;
 }
