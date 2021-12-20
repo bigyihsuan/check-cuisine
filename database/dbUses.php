@@ -15,10 +15,11 @@ function register($username, $password)
    $result = mysqli_query($con, $check);
    $num = mysqli_num_rows($result);
 
-   if ($num == 0) {
-      return true; //username available
-   } else {
-      return false; //username not available
+   $username_available = $num == 0; // true if username is available
+
+   if (!$username_available) {
+      echo "Registration failed";
+      return;
    }
 
    $hashedpass = passHash($password);
