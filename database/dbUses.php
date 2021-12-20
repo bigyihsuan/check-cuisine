@@ -31,6 +31,22 @@ function register($username, $password)
 function login($username, $password)
 {
    $con = dbCon();
+   $query = "SELECT * FROM users WHERE username = '$username'";
+	$result = $con->query($query);
+   if($result){
+		if($result->num_rows == 0){
+			echo("No users in table.");
+         return false;
+      }else{
+			while($row = $result->fetch_assoc()){
+				$hashedpass = passHash($password);
+				if ($row['hashedpass'] == $hashedpass){
+               echo "User Authenicated".PHP_EOL;
+					return 1;
+				}
+         }
+      }
+   }
 }
 
 function passHash($password)
