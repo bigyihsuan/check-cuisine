@@ -1,4 +1,3 @@
-
 <?php
 //Require Once All Other Necessary Rabbit Files
 require_once ('db.php');
@@ -23,8 +22,8 @@ function register($username, $password){
    
    $hashedpass = passHash($password);
    $reg = "INSERT INTO users(username, hashedpass) VALUES ('$username', '$hashedpass')";
-   mysqli_query($con, $reg);
-   echo "Registration Successful";
+   $query_status = mysqli_query($con, $reg);
+   echo $query_status ? "Registration Successful" : "Registration failed";
 
 function login($username, $password){
    $con = dbCon();
@@ -35,5 +34,3 @@ function passHash($password){
 	$hash = hash('sha256',$new);
 	return $hash;
 }
- 
-?>  
