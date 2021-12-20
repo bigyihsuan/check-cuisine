@@ -92,7 +92,8 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
             $m4 = $msg4->body;
             $msg4 = new AMQPMessage($m4);
             $publishReturn_channel->basic_publish($msg4, '', 'front-receive');
-            echo "Sent '$m4'\n";
+            echo " [*] Sent '$m4'\n";
+            echo " [*] Waiting for messages. To exit press CTRL+C\n";
         };
 
         $consumeReturn_channel->basic_consume('data-return-back', '', false, true, false, false, $callback2);
