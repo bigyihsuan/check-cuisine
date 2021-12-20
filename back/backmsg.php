@@ -71,7 +71,7 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
         //$m3 = readline("Message to database: ");
         // $m3 = $msg->body . "\n1 hello from the back";
         // $msg3 = new AMQPMessage($m3);
-        // $consumeData_channel->basic_publish($new_msg, '', 'data-back');
+        $consumeData_channel->basic_publish($new_msg, '', 'data-back');
         echo "Sent '$json'\n";
 
 
