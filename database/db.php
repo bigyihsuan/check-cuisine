@@ -31,6 +31,7 @@ function dbCon(){
 //if (mysqli_connect_errno()) {
 //    exit();
 //}
-//global $con;
-//
-//?>
+
+return $con;
+
+?>
