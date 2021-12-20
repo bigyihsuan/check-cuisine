@@ -13,6 +13,7 @@ function dbCon(){
 
     $con = mysqli_connect($host,$user,$password,$db);
     
+    return $con;
 }
 
 //$s = "SELECT * FROM users WHERE username = '$username'";
@@ -31,7 +32,5 @@ function dbCon(){
 //if (mysqli_connect_errno()) {
 //    exit();
 //}
-
-return $con;
 
 ?>
