@@ -77,9 +77,12 @@ for ($i = 0; $i < $end; $i++) {
         // echo " [*] Receiving data. To exit press CTRL+C\n";
 
         $callback = function ($msg) {
+            global $channel, $connection;
             echo <<<HTML
             <h1>{$msg->body}</h1>
             HTML;
+            $channel->close();
+            $connection->close();
             // echo ' [x] Received ', $msg->body, "\n";
         };
 
