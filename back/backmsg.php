@@ -61,15 +61,18 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
         echo ' [x] Received ', $msg->body, "\n";
 
 
+        $json = explode(" ", $msg->body, 2)[1];
+        $new_msg = new AMQPMessage($json);
+
         //$consume_channel->basic_publish($msg, '', 'back-data');
-        $consume_channel->basic_publish($msg, '', 'back-data');
+        // $consume_channel->basic_publish($new_msg, '', 'back-data');
 
 
         //$m3 = readline("Message to database: ");
-        $m3 = $msg->body . "\n1 hello from the back";
-        $msg3 = new AMQPMessage($m3);
-        $consumeData_channel->basic_publish($msg3, '', 'data-back');
-        echo "Sent '$m3'\n";
+        // $m3 = $msg->body . "\n1 hello from the back";
+        // $msg3 = new AMQPMessage($m3);
+        $consumeData_channel->basic_publish($new_msg, '', 'data-back');
+        echo "Sent '$json'\n";
 
 
         ///RECIEVEING MSGS FROM DATA//////

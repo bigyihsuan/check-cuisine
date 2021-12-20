@@ -44,8 +44,11 @@ $callback = function (AMQPMessage $msg) {
     $db = dbCon();
 
     echo ' [x] Received ', $msg->body, "\n";
+    $info = json_decode($msg->body);
+    $username = $info['username'];
+    $password = $info['password'];
 
-    ($result = $db->query("SELECT * FROM users;")) or die("Query Failed");
+    ($result = $db->query("SELECT * FROM users WHERE username=\"$username\" && `password`=\"$password\";")) or die("Query Failed");
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     $json = json_encode($rows);
 
