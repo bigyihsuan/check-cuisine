@@ -52,3 +52,4 @@ function passHash($password){
    $hash = hash('sha256', $new);
    return $hash;
 }
+?>
