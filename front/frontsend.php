@@ -61,7 +61,7 @@ for ($i = 0; $i < $end; $i++) {
         $username = $_GET['username'];
         $password = $_GET['password'];
 
-        $userpass = array($username => $password);
+        $userpass = array("username" => $username, "password" => $password);
         $userpass_json = json_encode($userpass);
 
         $msg1 = new AMQPMessage("0 $userpass_json");
