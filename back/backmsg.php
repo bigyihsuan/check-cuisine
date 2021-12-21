@@ -88,7 +88,7 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
 
             echo ' [x] Received ', $msg4->body, "\n";
 
-            $rows = json_decode($msg4->body, associative: true);
+            $rows = json_decode($msg4->body, true);
 
             if (count($rows) == 0) {
                 $username = $json['username'];
