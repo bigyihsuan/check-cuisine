@@ -84,8 +84,18 @@ $consume_channel->basic_consume('front-send', '', false, true, false, false, $ca
             global $consumeReturn_channel;
             global $publishReturn_channel;
 
+            global $json;
+
             echo ' [x] Received ', $msg4->body, "\n";
 
+            $rows = json_decode($msg4->body, associative: true);
+
+            if (count($rows) == 0) {
+                $username = $json['username'];
+                $errmsg = "Failed register/login: $username";
+
+                file_put_contents("backlog.txt", $errmsg, FILE_APPEND);
+            }
 
             $consumeReturn_channel->basic_publish($msg4, '', 'back-return-front');
 
